@@ -1,0 +1,13 @@
+<h2>Lista de Estudiantes</h2>
+
+<div *ngIf="students && students.length">
+  <ul>
+    <li *ngFor="let student of students">
+      {{ student.names_student }} {{ student.last_namestudent }}
+    </li>
+  </ul>
+</div>
+
+<div *ngIf="!students || students.length === 0">
+  No se encontraron estudiantes.
+</div>
