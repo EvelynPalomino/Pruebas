@@ -1,13 +1,72 @@
-<h2>Lista de Estudiantes</h2>
-
-<div *ngIf="students && students.length">
-  <ul>
-    <li *ngFor="let student of students">
-      {{ student.names_student }} {{ student.last_namestudent }}
-    </li>
-  </ul>
-</div>
-
-<div *ngIf="!students || students.length === 0">
-  No se encontraron estudiantes.
-</div>
+<div class="container">
+  <div class="student-list-container">
+  <h1 class="mt-4">Estudiantes CRUD</h1>
+  <div class="card-body">
+    <form method="post" action="#">
+      <div class="mb-2 row">
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="names_student" name="names"
+            placeholder="Ingrese nombre">
+        </div>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="last_namestudent"
+            name="last_name" placeholder="Ingrese apellido">
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-primary mb-2"
+            id="btnBuscar" name="btnBuscar">Buscar</button>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-success float-end mb-2"
+            id="btnNuevo" name="btnNuevo">Nuevo</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="card mb-5" id="divResultado">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i> Registros
+    </div>
+    <div class="card-body">
+      <button onclick="exportToCSV()">Exportar a CSV</button>
+      <button onclick="exportToExcel()">Exportar a Excel</button>
+      <button type="button" class="cancel-button"
+       onclick="window.location.href='export-pdf.jsp'"
+       style="background-color: #FF4136; border: none;
+        color: white; text-align: center; text-decoration:
+         none; display: inline-block; font-size: 14px;
+          margin-right: 6px; cursor: pointer; border-radius:
+           4px;">Exportar a PDF</button>
+      <table class="table caption-top">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Tipo Documento</th>
+            <th scope="col">N° Documento</th>
+            <th scope="col">Grado</th>
+            <th scope="col">Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of students">
+            <td>{{student.id_student}}</td>
+            <td>{{student.names_student}}</td>
+            <td>{{student.last_namestudent}}</td>
+            <td>{{student.type_document}}</td>
+            <td>{{student.number_document}}</td>
+            <td>{{student.grade_id}}</td>
+            <td>
+              <div class="selected-gender">
+                <span (click)="updateStudent(student.id_student)" ><button class="btn btn-primary"><i class='bx bxs-edit-alt' style='color:#f2ae1b'  ></i></button></span>
+                <span (click)="deleteStudent(student.id_student)"><button class="btn btn-danger"><i class='bx bxs-trash' style='color:#f21b1b' ></i></button></span>
+              
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>

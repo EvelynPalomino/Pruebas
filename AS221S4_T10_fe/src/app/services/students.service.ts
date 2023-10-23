@@ -8,48 +8,45 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class StudentService {
-  private apiUrl = 'http://localhost:8085/app/v1/students';
+  private apiUrl = 'http://localhost:8085/app/v1/';
 
   constructor(private http: HttpClient) {}
 
   findAll(): Observable<IStudent[]> {
-    return this.http.get<IStudent[]>(`${this.apiUrl}/activate`).pipe(
+    return this.http.get<IStudent[]>(`${this.apiUrl+'students'}`).pipe(
       catchError(this.handleError)
     );
   }
 
   getInactiveStudents(): Observable<IStudent[]> {
-    const url = `${this.apiUrl}/deactivate`;
+    const url = `${this.apiUrl+'students'}/deactivate`;
     return this.http.get<IStudent[]>(url).pipe(
       catchError(this.handleError)
     );
   }
 
   addStudent(student: IStudent): Observable<IStudent> {
-    return this.http.post<IStudent>(this.apiUrl, student).pipe(
+    return this.http.post<IStudent>(this.apiUrl+'students', student).pipe(
       catchError(this.handleError)
     );
   }
 
   update(student: IStudent): Observable<IStudent> {
-    const url = `${this.apiUrl}/students/${student.id_student}`;
+    const url = `${this.apiUrl+'students'}/${student.id_student}`;
     return this.http.put<IStudent>(url, student).pipe(
       catchError(this.handleError)
     );
   }
 
-  updateStudent(id: number): Observable<void> {
-    const url = `${this.apiUrl}/activate/${id}`;
+  updateStudent(id_student: number): Observable<void> {
+    const url = `${this.apiUrl+'students'}/activate/${id_student}`;
     return this.http.put<void>(url, null).pipe(
       catchError(this.handleError)
     );
   }
 
-  delete(id: number): Observable<void> {
-    const url = `${this.apiUrl}/deactivate/${id}`;
-    return this.http.delete<void>(url).pipe(
-      catchError(this.handleError)
-    );
+  delete(id_student: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl+'students'}/deactivate/${id_student}`)
   }
 
   private handleError(error: any) {

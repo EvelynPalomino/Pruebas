@@ -3,7 +3,7 @@
 .sidebar {
   background-color: #151B54; /* Cambiar a un azul noche casi oscuro */
   color: #fff;
-  width: 250px;
+  width: 222px;
   position: fixed;
   height: 100%;
   top: 0;
@@ -15,7 +15,7 @@
 
 .sidebar-header {
   padding: 20px;
-  text-align: center;
+  text-align: center; 
 }
 
 .sidebar-header h1 {
