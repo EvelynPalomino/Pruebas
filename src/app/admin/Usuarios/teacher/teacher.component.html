@@ -1,0 +1,141 @@
+<app-home></app-home>
+<!-- Contenido principal -->
+<!-- Contenido principal -->
+<div class="container">
+  <div class="card border-primary mb-3">
+    <div class="card-header">Teacher</div>
+    <div class="card-body text-primary">
+      <h5 class="card-title">Listado de Teachers</h5>
+
+      <!-- Centrar el contenido del formulario y el mensaje -->
+      <div class="search-container text-center">
+        <!-- Search Form -->
+        <form class="form-inline mb-3">
+          <div class="form-group mr-2">
+            <label for="searchName" class="sr-only">Nombre:</label>
+            <input type="text" class="form-control" id="searchName" name="searchName" placeholder="Nombre"
+              [(ngModel)]="searchName" />
+          </div>
+          <div class="form-group mr-2">
+            <label for="searchLastName" class="sr-only">Apellido:</label>
+            <input type="text" class="form-control" id="searchLastName" name="searchLastName" placeholder="Apellido"
+              [(ngModel)]="searchLastName" />
+          </div>
+          <!-- Tipo de Documento -->
+          <div class="form-group mr-2">
+            <label for="searchDocumentType" class="sr-only">Seleccionar Tipo de Documento</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="searchDocumentType">Tipo</label>
+              </div>
+              <select class="custom-select" id="searchDocumentType" name="searchDocumentType"
+                [(ngModel)]="searchDocumentType">
+                <option value="DNI">DNI</option>
+                <option value="CNE">CNE</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group mr-2">
+            <label for="searchDocumentNumber" class="sr-only">Número de Documento:</label>
+            <label class="position-relative">
+              <input type="text" class="form-control" id="searchDocumentNumber" name="searchDocumentNumber"
+                placeholder="Número de Documento" [(ngModel)]="searchDocumentNumber" pattern="^[0-9]*$"
+                #searchDocumentNumberInput="ngModel"
+                [ngClass]="{'is-invalid': searchDocumentNumberInput.invalid && (searchDocumentNumberInput.dirty || searchDocumentNumberInput.touched), 'is-valid': searchDocumentNumberInput.valid && searchDocumentNumberInput.touched}" />
+            </label>
+          </div>
+          <div class="form-group mr-2">
+            <label for="searchSpecialty" class="sr-only">Especialidad:</label>
+            <label class="position-relative">
+                <select class="form-control" id="searchSpecialty" name="searchSpecialty" [(ngModel)]="searchSpecialty">
+                    <option value="" disabled selected>Selecciona una especialidad</option>
+                    <option value="Matematica">Matemática</option>
+                    <option value="Comunicacion">Comunicación</option>
+                    <option value="Quimica">Química</option>
+                    <option value="Arte">Arte</option>
+                    <option value="Personal Social">Personal Social</option>
+                    <option value="Educacion Fisica">Educación Física</option>
+                    <option value="Historia">Historia</option>
+                </select>
+            </label>
+        </div>
+          <button type="button" class="btn btn-primary" (click)="searchTeachers()">Buscar</button>
+          <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
+        </form>
+
+        <div class="d-flex">
+          <button type="button" class="btn btn btn-custom mr-2" (click)="exportToExcel()">
+            <i class="fas fa-file-excel"></i> Exportar a Excel
+          </button>
+        
+          <button type="button" class="btn btn btn-custom mr-2" (click)="exportToCSV()">
+            <i class="fas fa-file-csv"></i> Exportar a CSV
+          </button>
+            <button type="button" class="btn btn  btn-custom" (click)="exportToPDF()">
+              <i class="fas fa-file-pdf"></i> Exportar a PDF 
+            </button>
+          </div>  
+        
+
+        <!-- <button class="pdf" (click)="exportToPDF()">Exportar a PDF</button> -->
+
+        <!-- Mensaje de no resultados -->
+        <div *ngIf="noResultsMessageVisible" class="no-results-message">
+          <p class="error-message">No hay datos de búsqueda.</p>
+        </div>
+      </div>
+
+      <!-- Button to trigger modal -->
+      <button type="button" class="btn btn-primary mb-3" (click)="openCreateModal()">Crear Teacher</button>
+
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table #miTabla class="table table-bordered table-striped table-width-30 small">
+          <thead class="table-primary">
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Fecha de Nacimiento</th>
+              <th>Salario</th>
+              <th>Especialidad</th>
+              <th>Tipo de documento</th>
+              <th>Numero de documento</th>
+              <th>Email</th>
+              <th>Celular</th>
+              <th>Usuario</th>
+              <th>Contraseña</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let teacher of teachers">
+              <td>{{ teacher.nameTeacher }}</td>
+              <td>{{ teacher.lastNameTeacher }}</td>
+              <td>{{ teacher.dateOfBirth }}</td>
+              <td>{{ teacher.salary }}</td>
+              <td>{{ teacher.specialization }}</td>
+              <td>{{ teacher.documentType }}</td>
+              <td>{{ teacher.documentNumber }}</td>
+              <td>{{ teacher.email }}</td>
+              <td>{{ teacher.phoneNumber }}</td>
+              <td>{{ teacher.userTeacher }}</td>
+              <td>{{ teacher.passwordTeacher }}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm" (click)="openEditModal(teacher)">Editar</button>
+              </td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm" (click)="delete(teacher)">Eliminar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <app-footer></app-footer>
+
+</div>

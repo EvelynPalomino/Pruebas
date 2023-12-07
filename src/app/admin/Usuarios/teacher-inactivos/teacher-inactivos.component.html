@@ -1,0 +1,82 @@
+<app-sidebar></app-sidebar>
+<br>
+<br>
+<br>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-md-9">
+      <!-- Contenido principal -->
+      <div class="card border-primary mb-3">
+        <div class="card-header">Teacher</div>
+        <div class="card-body text-primary">
+          <h5 class="card-title">Listado de Teachers inactivos</h5>
+          <div class="d-flex">
+            <button type="button" class="btn btn btn-custom mr-2" (click)="exportToExcel()">
+              <i class="fas fa-file-excel"></i> Exportar a Excel
+            </button>
+
+            <button type="button" class="btn btn btn-custom mr-2" (click)="exportToCSV()">
+              <i class="fas fa-file-csv"></i> Exportar a CSV
+            </button>
+            <button type="button" class="btn btn  btn-custom" (click)="exportToPDF()">
+              <i class="fas fa-file-pdf"></i> Exportar a PDF
+            </button>
+          </div>
+          <div class="my-5 text-left"></div>
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered w-100 small">
+              <thead>
+                <!-- Encabezados de la tabla -->
+                <tr class="table-primary">
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Fecha de Nacimiento</th>
+                  <th>Salario</th>
+                  <th>Especialidad</th>
+                  <th>Tipo de documento</th>
+                  <th>Numero de documento</th>
+                  <th>Email</th>
+                  <th>Celular</th>
+                  <th>Usuario</th>
+                  <th>Contraseña</th>
+                  <th>Accion</th>
+                  <th>Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Contenido de la tabla -->
+                <tr *ngFor="let item of inactiveTeachers">
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.nameTeacher }}</td>
+                  <td>{{ item.lastNameTeacher }}</td>
+                  <td>{{ item.dateOfBirth }}</td>
+                  <td>{{ item.salary }}</td>
+                  <td>{{ item.specialization }}</td>
+                  <td>{{ item.documentType }}</td>
+                  <td>{{ item.documentNumber }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>{{ item.phoneNumber }}</td>
+                  <td>{{ item.userTeacher }}</td>
+                  <td>{{ item.passwordTeacher }}</td>
+                  <td>
+                    <button type="button" class="btn btn-success btn-sm"
+                      (click)="restoreTeacher(item)">Restaurar</button>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-danger btn-sm" (click)="delete(item)">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+
+  <app-footer></app-footer>
+</div>

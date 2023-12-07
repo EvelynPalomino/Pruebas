@@ -1,0 +1,73 @@
+@import "~@fortawesome/fontawesome-free/css/all.css";
+/* Estilos personalizados para los botones */
+.btn-custom {
+  background-color: #ffffff; /* Fondo blanco */
+  border: 1px solid #007bff; /* Borde azul */
+  color: #007bff; /* Texto azul */
+}
+
+/* Cambiar el color del texto al pasar el ratón sobre el botón */
+.btn-custom:hover {
+  color: #ffffff; /* Texto blanco */
+  background-color: #007bff; /* Fondo azul */
+}
+
+
+.no-results-message {
+  text-align: left;
+  margin-top: 20px; /* Ajusta según sea necesario para el espacio entre el formulario y el mensaje */
+}
+
+.error-message {
+  color: rgb(98, 0, 255);
+}
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-bottom: 20px; /* Ajusta según sea necesario para el espacio entre el formulario y otros elementos */
+}
+
+.no-results-message {
+  text-align: center;
+  color: red;
+  margin-top: 20px; /* Ajusta según sea necesario para el espacio entre el formulario y el mensaje */
+}
+
+
+.form-control {
+  border: 1px solid #ddd; /* Borde ligero */
+  border-radius: 3px; /* Bordes redondeados */
+  box-shadow: none; /* Sin sombra */
+}
+
+/* Cambia el color del fondo cuando el campo tiene el foco */
+.form-control:focus {
+  border-color: #5cb3fd;
+  box-shadow: none;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd; /* Borde ligero */
+  padding: 8px;
+  text-align: left;
+}
+
+/* Estilo de fila alternativa */
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Resalta la fila al pasar el mouse sobre ella */
+tr:hover {
+  background-color: #e1f5fe;
+}
+
+.table-width-100 {
+  width: 100%;
+}

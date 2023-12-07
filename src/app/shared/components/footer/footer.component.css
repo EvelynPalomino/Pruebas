@@ -1,0 +1,18 @@
+@media (min-width: 992px) {
+    footer {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-width: none;
+        background-color: #253096;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .main-content {
+        padding-right: 250px; /* Añade espacio a la derecha igual al ancho del footer */
+    }
+}

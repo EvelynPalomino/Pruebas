@@ -1,0 +1,3 @@
+import 'jspdf-autotable';
+
+

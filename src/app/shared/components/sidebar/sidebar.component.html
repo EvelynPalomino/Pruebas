@@ -1,0 +1,239 @@
+<!-- <nav class="sidebar">
+  <div class="sidebar-header">
+    <h1>Notes Edu <i class="fa fa-rocket"></i></h1>
+  </div>
+  <ul class="menu">
+    <li><a routerLink="/Home"><i class="fa fa-home"></i> Inicio</a></li>
+    <li><a routerLink="/perfil"><i class="fa fa-user"></i> Perfil</a></li>
+    <li>
+      <a (click)="toggleAdmin()">
+        <i class="fa fa-cogs"></i> Teacher
+      </a>
+      <ul id="adminSubMenu" class="sub-menu">
+        <a routerLink="#">
+          <i class="fa fa-user"></i> Profesor
+      </a>
+
+        <li><a routerLink="/Teacher"><i class="fa fa-book"></i> Lista de Activos</a></li>
+        <li><a routerLink="/Inactivos"><i class="fa fa-book"></i> Lista de Inactivos</a></li>
+        <li><a routerLink="/Edit"><i class="fa fa-gear"></i> Ajustes</a></li>
+      </ul>
+    </li>
+    <li>
+      <a (click)="togglePrestamos()">
+        <i class="fa fa-handshake-o"></i> Notas
+      </a>
+      <ul id="prestamosSubMenu" class="sub-menu">
+        <li><a routerLink="/admin/loans/reservation"><i class="fa fa-calendar"></i> Nuevo Registro</a></li>
+        <li><a routerLink="/admin/loans/return"><i class="fa fa-exchange"></i> Return</a></li>
+      </ul>
+    </li>
+    <li><a routerLink="/login"><i class="fa fa-sign-out"></i> Salir</a></li>
+  </ul>
+</nav> -->
+<header>
+  <img src="https://i.ibb.co/gWGwbyQ/330158531-1321988551711293-7007550439193672835-n.jpg" alt="Centro de Mujeres"
+    class="logo_header">
+  <nav class="nav_header">
+    <ul class="menu">
+      <li><a routerLink="/Teacher">Teacher Activos</a></li>
+      <li><a routerLink="/Inactivos">Teacher Inactivos</a></li>
+      <li><a routerLink="/Student-a">Student Activos</a></li>
+      <li><a routerLink="/Student-i">Student Inactivos</a></li>
+      <li><a routerLink="/tv">Dashboard</a></li>
+      <li><a routerLink="/login" (click)="openConfirmModal()">Cerrar Sesión</a></li>
+
+      <div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+        aria-hidden="true" [ngClass]="{'show': modalOpen}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="confirmModalLabel">Confirmar</h5>
+              <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>¿Estás seguro de cerrar sesión?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+              <button type="button" class="btn btn-primary" (click)="logoutAndCloseModal()">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ul>
+    <div class="actionsv2">
+      <div class="btn-menu-actionv2">
+        <img class="avatar" src="https://i.ibb.co/R9Thnyc/images.png" alt="Felipe Ceballos">
+        <span>Administrador</span>
+        <img class="arrow" src="" class="btn_modal">
+      </div>
+      <div class="menu-actionv2-container">
+        <div class="menu-actionv2-triangle"></div>
+        <div class="menu-actionv2-content">
+          <div class="menu-actionv2-courseCurrently">
+            <p class="courseCurrently-text">Continua viendo</p>
+            <div class="courseCurrently-info">
+              <figure>
+                <img class="img-courseCurrently" loading="lazy"
+                  src="https://static.platzi.com/media/achievements/badge-creacion-blogs-wordpress-ca7a391a-878c-4eb8-bd98-df4ffd23e760.png"
+                  alt="Curso de Creación de Blogs con WordPress">
+              </figure>
+              <div class="course-info">
+                <div class="course-info-progress">
+                  <p class="course-name">
+                    <strong>
+                      Curso de Creación de Blogs con WordPress
+                    </strong>
+                  </p>
+                  <p>
+                    24%
+                  </p>
+                </div>
+                <div class="progress-bar">
+                  <span class="progress-fill"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="#" class="all-courses-link">Ver todos mis cursos</a>
+          <div class="profile-container">
+            <p class="profile-info-greeting"><strong>¡Hola, Luis Felipe!</strong></p>
+            <p class="profile-info-plan">Platzi Expert+</p>
+            <a href="#" class="profile-info-link">Ver mi perfil</a>
+          </div>
+          <div class="menu-other-options">
+            <a href="#" class="menu-other-options-links">
+              <img class="icons-menu-other-options"
+                src="https://img.icons8.com/pastel-glyph/16/0584d2/suitcase--v4.png" />
+              Empleos
+            </a>
+            <a href="#" class="menu-other-options-links">
+              <img class="icons-menu-other-options" src="https://img.icons8.com/ios/15/0584d2/gift--v1.png" />
+              Obtén 1 mes gratis
+            </a>
+            <a href="#" class="menu-other-options-links">
+              <img class="icons-menu-other-options"
+                src="https://img.icons8.com/pastel-glyph/16/0584d2/suitcase--v4.png" />
+              Mi Suscripción
+            </a>
+            <a href="#" class="menu-other-options-links">
+              <svg class="icons-menu-other-options" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16"
+                height="16" viewBox="0 0 172 172" style=" fill:#000000;">
+                <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                  stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                  font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                  style="mix-blend-mode: normal">
+                  <path d="M0,172v-172h172v172z" fill="none"></path>
+                  <g fill="#0584d2">
+                    <path
+                      d="M127.27045,161.25787c-2.38306,0 -4.711,-0.88971 -6.56915,-2.60352l-24.18488,-22.32672h-74.17657c-12.31946,0 -22.33984,-10.02039 -22.33984,-22.33984v-80.89795c0,-12.31946 10.02039,-22.33984 22.33984,-22.33984h127.32031c12.31946,0 22.33984,10.02039 22.33984,22.33984v80.89795c0,12.31946 -10.02039,22.33984 -22.33984,22.33984h-12.59766v15.1618c0,3.93152 -2.23608,7.35388 -5.83691,8.93121c-1.28864,0.56165 -2.62976,0.83722 -3.95514,0.83722zM22.33984,18.8125c-7.87353,0 -14.27734,6.40381 -14.27734,14.27734v80.89795c0,7.87354 6.40381,14.27734 14.27734,14.27734h75.75391c1.01306,0 1.98938,0.38055 2.73474,1.06818l25.34229,23.3949c0.71124,0.65875 1.44873,0.47504 1.81879,0.30707c0.37793,-0.16534 1.01044,-0.58527 1.01044,-1.54584v-19.19305c0,-2.22559 1.80566,-4.03125 4.03125,-4.03125h16.62891c7.87354,0 14.27734,-6.40381 14.27734,-14.27734v-80.89795c0,-7.87353 -6.40381,-14.27734 -14.27734,-14.27734z">
+                    </path>
+                    <circle cx="8.312" cy="12.109" transform="scale(5.375,5.375)" r="1.375"></circle>
+                    <circle cx="17.375" cy="12.109" transform="scale(5.375,5.375)" r="1.375"></circle>
+                    <path
+                      d="M69.03516,95.32227c-11.70795,0 -15.95703,-9.99414 -15.95703,-16.71289c0,-2.22559 1.80566,-4.03125 4.03125,-4.03125c2.22559,0 4.03125,1.80566 4.03125,4.03125c0.01837,1.42249 0.48816,8.65039 7.89453,8.65039c7.67407,0 7.89453,-7.76593 7.89453,-8.65039c0,-2.22559 1.80566,-4.03125 4.03125,-4.03125c2.22559,0 4.03125,1.80566 4.03125,4.03125c0,6.71875 -4.24908,16.71289 -15.95703,16.71289z">
+                    </path>
+                  </g>
+                </g>
+
+              </svg>
+              Contáctanos
+            </a>
+          </div>
+          <a class="btn-logout" href="#">
+            Cerrar Sesion
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="notificacion">
+      <div class="notificacion_icon">
+        <svg version="1.1" id="Layer_1" width="24" height="24" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24"
+          style="enable-background:new 0 0 24 24" xml:space="preserve">
+          <g class="">
+            <path id="campanita2" class="" style="fill:white"
+              d="M12.9,18.9c0,0.5-0.4,0.9-0.9,0.9s-0.9-0.4-0.9-0.9H9.7c0,1.3,1,2.3,2.3,2.3s2.3-1,2.3-2.3H12.9z">
+
+            </path>
+            <path id="camapanita1" style="fill:white"
+              d="M19.2,14.7c-0.6-0.6-1.2-1.2-1.2-4.1c0-3-2.2-5.4-5-5.9c0.1-0.2,0.2-0.4,0.2-0.6 c0-0.6-0.5-1.1-1.1-1.1S10.9,3.4,10.9,4c0,0.2,0.1,0.5,0.2,0.6c-2.8,0.5-5,2.9-5,5.9c0,2.9-0.6,3.5-1.2,4.1 c-1.7,1.7-0.5,4.2,1.6,4.2h3.3h4.6h3.3C19.7,18.9,20.9,16.4,19.2,14.7z M17.6,17.1H6.4c-0.6,0-0.9-0.7-0.5-1.1c1-1,1.8-2,1.8-5.5 c0-2.3,1.9-4.2,4.2-4.2s4.2,1.9,4.2,4.2c0,3.5,0.8,4.4,1.8,5.5C18.5,16.4,18.2,17.1,17.6,17.1z">
+            </path>
+          </g>
+        </svg>
+      </div>
+      <div class="notificacion_content_container">
+        <div class="notificacion_content_triangle"></div>
+        <div class="notificacion_content">
+          <div class="notificacion_content_headerLayout">
+            <p>Tus notificaciones</p>
+            <img src="https://img.icons8.com/material-outlined/16/223354/settings--v1.png" />
+          </div>
+          <div class="notificacion_content_bodyLayout">
+            <div class="ncb_container">
+              <div class="ncb_firstParagrah">
+                <p>
+                  <strong>Flor </strong>publicó un nuevo post
+                </p>
+                <p>1 h</p>
+              </div>
+              <p>
+                Aprende como gestionar la procrastinación
+              </p>
+            </div>
+            <div class="ncb_container">
+              <div class="ncb_firstParagrah">
+                <p>
+                  <strong>Flor </strong>publicó un nuevo post
+                </p>
+                <p>3 h</p>
+              </div>
+              <p>
+                Aprende como gestionar la procrastinación
+              </p>
+            </div>
+            <div class="ncb_container">
+              <div class="ncb_firstParagrah">
+                <p>
+                  <strong>Flor </strong>publicó un nuevo post
+                </p>
+                <p>20 h</p>
+              </div>
+              <p>
+                Aprende como gestionar la procrastinación
+              </p>
+            </div>
+            <div class="ncb_container">
+              <div class="ncb_firstParagrah">
+                <p>
+                  <strong>Flor </strong>publicó un nuevo post
+                </p>
+                <p>21 h</p>
+              </div>
+              <p>
+                Aprende como gestionar la procrastinación
+              </p>
+            </div>
+          </div>
+          <div class="notificacion_content_footerLayout">
+            <p>Marcar todas como leídas</p>
+            <p>Ver todas -></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu_mobile">Menú</div>
+    <div class="btn_search_tablet">
+      <img src="https://img.icons8.com/ios-filled/15/ffffff/search--v1.png">
+    </div>
+    <div class="search">
+      <input type="text" placeholder="Buscar en NotesEdu" autocomplete="off" class="input_search">
+      <button>
+        <img src="https://img.icons8.com/ios-filled/15/000000/search--v1.png" class="icon_btn_search">
+      </button>
+    </div>
+  </nav>
