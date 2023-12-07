@@ -10,7 +10,7 @@ export class TeacherServices {
   createOrUpdate(teacher: Teacher, isCreate: boolean) {
     throw new Error('Method not implemented.');
   }
-    private urlNotesedu: string = 'http://localhost:8080/v1/teachers'
+    private urlNotesedu: string = 'http://localhost:8085/app/v1/teachers'
     private httpHeaders = new HttpHeaders({'Content-Type' : 'application/json'})
 
 constructor(
@@ -33,7 +33,7 @@ constructor(
     return this.http.delete<void>(`${this.urlNotesedu}/${id}`, { headers: this.httpHeaders });
   }
   update(teacher: Teacher): Observable<Teacher> {
-    return this.http.put(`${this.urlNotesedu}/${teacher.id}`, Teacher, { headers: this.httpHeaders })
+    return this.http.put(`${this.urlNotesedu}/${teacher.idTeacher}`, Teacher, { headers: this.httpHeaders })
       .pipe(
         map((response) => response as Teacher)
       );

@@ -11,7 +11,7 @@
     <div class="mb-1 position-relative">
         <label for="name"></label>
         <span class="input-group-text" id="basic-addon1">Nombre</span>
-        <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names_student" name="names"
+        <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names"
             required pattern="^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]*[A-ZÁÉÍÓÚÑ]$" #namesInput="ngModel"
             [ngClass]="{'is-invalid': namesInput.invalid && (namesInput.dirty || namesInput.touched), 'is-valid': namesInput.valid && namesInput.touched}" />
         <div *ngIf="namesInput.invalid && (namesInput.dirty || namesInput.touched)" class="text-danger">
@@ -29,7 +29,7 @@
     <div class="mb-1 position-relative">
         <label for="last_name"></label>
         <span class="input-group-text" id="basic-addon1">Apellido</span>
-        <input type="text" class="form-control" placeholder="Apellido" [(ngModel)]="Student.last_namestudent"
+        <input type="text" class="form-control" placeholder="Apellido" [(ngModel)]="Student.lastName"
             name="last_name" />
     </div>
 
@@ -37,7 +37,7 @@
     <div class="mb-1 position-relative">
         <label for="type_document"></label>
         <span class="input-group-text" id="basic-addon1">Tipo de Documento</span>
-        <input type="text" class="form-control" placeholder="Tipo de Documento" [(ngModel)]="Student.type_document"
+        <input type="text" class="form-control" placeholder="Tipo de Documento" [(ngModel)]="Student.documentTypeId"
             name="type_document" />
     </div>
 
@@ -45,7 +45,7 @@
     <div class="mb-1 position-relative">
         <label for="number_document"></label>
         <span class="input-group-text" id="basic-addon1">Número de Documento</span>
-        <input type="text" class="form-control" placeholder="Número de Documento" [(ngModel)]="Student.number_document"
+        <input type="text" class="form-control" placeholder="Número de Documento" [(ngModel)]="Student.numberDocument"
             name="number_document" />
     </div>
 
@@ -53,7 +53,7 @@
     <div class="mb-1 position-relative">
         <label for="grade_id"></label>
         <span class="input-group-text" id="basic-addon1">ID de Grado</span>
-        <input type="number" class="form-control" placeholder="ID de Grado" [(ngModel)]="Student.grade_id"
+        <input type="number" class="form-control" placeholder="ID de Grado" [(ngModel)]="Student.gradeId"
             name="grade_id" />
     </div>
 

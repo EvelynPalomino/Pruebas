@@ -22,7 +22,7 @@ export class TeacherInactivosComponent implements OnInit {
   }
 
   restoreTeacher(teacher: Teacher): void {
-    if (teacher && teacher.id) {
+    if (teacher && teacher.idTeacher) {
       // Muestra un modal de confirmación
       Swal.fire({
         title: '¿Restaurar profesor?',
@@ -36,7 +36,7 @@ export class TeacherInactivosComponent implements OnInit {
       }).then((result) => {
         // Si el usuario confirma la restauración, procede a restaurar al profesor
         if (result.isConfirmed) {
-          this.teacherService.restoreTeacher(teacher.id).subscribe(() => {
+          this.teacherService.restoreTeacher(teacher.idTeacher).subscribe(() => {
             // Elimina el profesor de la lista de inactivos después de la restauración exitosa
             this.inactiveTeachers = this.inactiveTeachers.filter(tea => tea !== teacher);
 
@@ -54,7 +54,7 @@ export class TeacherInactivosComponent implements OnInit {
   }
 
   delete(teacher: Teacher): void {
-    if (teacher && teacher.id) {
+    if (teacher && teacher.idTeacher) {
       // Muestra un modal de confirmación
       Swal.fire({
         title: '¿Eliminar profesor?',
@@ -68,7 +68,7 @@ export class TeacherInactivosComponent implements OnInit {
       }).then((result) => {
         // Si el usuario confirma la eliminación, procede a eliminar al profesor
         if (result.isConfirmed) {
-          this.teacherService.delete(teacher.id).subscribe(
+          this.teacherService.delete(teacher.idTeacher).subscribe(
             response => {
               // Elimina el profesor de la lista de inactivos después de la eliminación exitosa
               this.inactiveTeachers = this.inactiveTeachers.filter(tea => tea !== teacher);
@@ -88,7 +88,7 @@ export class TeacherInactivosComponent implements OnInit {
   }
   exportToCSV() {
     // Realizar una solicitud HTTP GET para obtener los datos desde tu API
-    fetch('http://localhost:8080/v1/teachers')
+    fetch('http://localhost:8085/app/v1/teachers')
       .then(response => response.json())
       .then(data => {
         // Filtrar profesores inactivos (stateTeacher === 'I')
@@ -122,7 +122,7 @@ export class TeacherInactivosComponent implements OnInit {
   }
   exportToExcel() {
     // Realizar una solicitud HTTP GET para obtener los datos desde tu API
-    this.http.get<any[]>('http://localhost:8080/v1/teachers')
+    this.http.get<any[]>('http://localhost:8085/app/v1/teachers')
       .subscribe((data: any[]) => {
         // Filtrar profesores inactivos
         const inactiveTeachers = data.filter(teacher => teacher.stateTeacher === 'I');
@@ -146,7 +146,7 @@ export class TeacherInactivosComponent implements OnInit {
       });
   }
   exportToPDF() {
-    this.http.get<any[]>('http://localhost:8080/v1/teachers').subscribe(
+    this.http.get<any[]>('http://localhost:8085/app/v1/teachers').subscribe(
       (data: any[]) => {
         if (data && data.length > 0) {
           this.generatePDF(data);

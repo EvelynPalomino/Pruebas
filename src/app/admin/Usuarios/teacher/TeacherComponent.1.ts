@@ -36,39 +36,34 @@ export class TeacherComponent implements OnInit {
   searchDocumentType: string = '';
   searchSpecialty: string = '';
 
-  // Ajusta la función searchTeachers
-  searchTeachers() {
-    this.teacherService.getTeachers().subscribe((teachers) => {
-      const filteredTeachers = teachers
-        .filter((teacher) => teacher.stateTeacher === 'A')
-        .filter(
-          (teacher) => (this.searchName === '' ||
-            teacher.nameTeacher
-              .toLowerCase()
-              .includes(this.searchName.toLowerCase())) &&
-            (this.searchLastName === '' ||
-              teacher.lastNameTeacher
-                .toLowerCase()
-                .includes(this.searchLastName.toLowerCase())) &&
-            ((this.searchDocumentType === '' &&
-              (teacher.documentType === 'DNI' ||
-                teacher.documentType === 'CNE')) ||
-              (this.searchDocumentType !== '' &&
-                teacher.documentType === this.searchDocumentType)) &&
-            (this.searchDocumentNumber === '' ||
-              teacher.documentNumber.includes(this.searchDocumentNumber)) &&
-            (this.searchSpecialty === '' ||
-              teacher.specialization
-                .toLowerCase()
-                .includes(this.searchSpecialty.toLowerCase()))
-        );
+  // // Ajusta la función searchTeachers
+  // searchTeachers() {
+  //   this.teacherService.getTeachers().subscribe((teachers) => {
+  //     const filteredTeachers = teachers
+  //       .filter((teacher) => teacher.stateTeacher === 'A')
+  //       .filter(
+  //         (teacher) => (this.searchName === '' ||
+  //           teacher.nameTeacher
+  //             .toLowerCase()
+  //             .includes(this.searchName.toLowerCase())) &&
+  //           (this.searchLastName === '' ||
+  //             teacher.lastNameTeacher
+  //               .toLowerCase()
+  //               .includes(this.searchLastName.toLowerCase())) &&
+  //           ((this.searchDocumentType === '' &&
+  //             (teacher.documentType === 'DNI' ||
+  //               teacher.documentType === 'CNE')) ||
+  //             (this.searchDocumentType !== '' &&
+  //               teacher.documentTypeId === this.searchDocumentType)) &&
+  //           (this.searchDocumentNumber === '' ||
+  //             teacher.documentNumber.includes(this.searchDocumentNumber)) &&
+  //           (this.searchSpecialty === '' ||
+  //             teacher.specialization
+  //               .toLowerCase()
+  //               .includes(this.searchSpecialty.toLowerCase()))
+  //       );
 
-      this.teachers = filteredTeachers;
-
-      // Actualiza la visibilidad del mensaje en función de si hay resultados o no
-      this.noResultsMessageVisible = filteredTeachers.length === 0;
-    });
-  }
+  //    k
   // Ajusta la función clearSearch
   clearSearch() {
     this.searchName = '';
@@ -115,7 +110,7 @@ export class TeacherComponent implements OnInit {
       // Si el usuario confirma la eliminación, procede a eliminar el profesor
       if (result.isConfirmed) {
         this.teacherService
-          .deleteDesactivate(teacher.id)
+          .deleteDesactivate(teacher.idTeacher)
           .subscribe((response) => {
             // Elimina el profesor de la lista después de la eliminación exitosa
             this.teachers = this.teachers.filter((tea) => tea !== teacher);
@@ -192,7 +187,7 @@ export class TeacherComponent implements OnInit {
 
   exportToCSV() {
     // Realizar una solicitud HTTP GET para obtener los datos desde tu API
-    fetch('http://localhost:8080/v1/teachers')
+    fetch('http://localhost:8085/app/v1/teachers')
       .then(response => response.json())
       .then(data => {
         // Convertir los datos a formato CSV
@@ -220,7 +215,7 @@ export class TeacherComponent implements OnInit {
 
   exportToExcel() {
     // Realizar una solicitud HTTP GET para obtener los datos desde tu API
-    this.http.get<any[]>('http://localhost:8080/v1/teachers')
+    this.http.get<any[]>('http://localhost:8085/app/v1/teachers')
       .subscribe((data: any[]) => {
         // Convertir los datos a un libro de Excel
         const workbook = XLSX.utils.book_new();
@@ -242,7 +237,7 @@ export class TeacherComponent implements OnInit {
   }
 
   exportToPDF() {
-    this.http.get<any[]>('http://localhost:8080/v1/teachers').subscribe(
+    this.http.get<any[]>('http://localhost:8085/app/v1/teachers').subscribe(
       (data: any[]) => {
         if (data && data.length > 0) {
           this.generatePDF(data);

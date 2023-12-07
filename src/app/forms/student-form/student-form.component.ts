@@ -68,13 +68,13 @@ export class StudentFormComponent implements OnInit{
       }
     
       create(): void {
-        this.Student.state_student = 'A';
+        this.Student.state = 'A';
     
         this.StudentService.create(this.Student).subscribe(
           createdStudent => {
             Swal.fire({
               title: 'Operacion Exitosa',
-              text: `Usuario ${createdStudent.names_student} creado exitosamente!`,
+              text: `Usuario ${createdStudent.names} creado exitosamente!`,
               icon: 'success',
               showCancelButton: false,
               confirmButtonText: 'Ok'

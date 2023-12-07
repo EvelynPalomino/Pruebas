@@ -1,6 +1,6 @@
 export class Teacher {
 
-  id: number = 0;
+  idTeacher: number = 0;
   nameTeacher: string = '';
   lastNameTeacher: string = '';
   userTeacher: string = '';
@@ -9,8 +9,8 @@ export class Teacher {
   registrationDate = '';
   dateOfBirth: Date = new Date(); 
   salary: number = 0.0;
-  specialization: string = '';
-  documentType: string = '';
+  courseId: number = 0;
+  documentTypeId: number = 0;
   documentNumber: string = '';
   email: string = '';
   phoneNumber: string = '';

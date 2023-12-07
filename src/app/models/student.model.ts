@@ -1,10 +1,13 @@
 export class Student {
-
-    id_student: number = 0;
-    names_student: string = '';
-    last_namestudent: string = '';
-    state_student: string = '';
-    type_document: string = '';
-    number_document: string = '';
-    grade_id: number = 0;
-  }
+  id: number = 0;
+  state: string = '';
+  names: string = '';
+  lastName: string = '';
+  documentTypeId: number = 0; // Aquí podrías usar un tipo de datos más específico si lo requieres
+  numberDocument: string = '';
+  academicLevelId: number = 0; // Puedes ajustar el tipo de dato según corresponda
+  gradeId: number = 0;
+  email: string = ''; // Asegúrate de usar un tipo de datos para el email
+  password: string = '';
+  cellPhone: number = 0; // Puedes ajustar el tipo de datos si lo necesitas
+}

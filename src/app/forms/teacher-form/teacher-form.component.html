@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">{{teacher && teacher.id ? 'Actualizar Teacher' : 'Nuevo Teacher'}}</h4>
+  <h4 class="modal-title pull-left">{{teacher && teacher.idTeacher ? 'Actualizar Teacher' : 'Nuevo Teacher'}}</h4>
   <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="closeModal()">
     <span aria-hidden="true" class="visually-hidden">&times;</span>
   </button>
@@ -102,11 +102,11 @@
     <div class="mb-3">
       <label for="specialization_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Especialización</span>
-      <select class="form-select" name="specialization_teacher" [(ngModel)]="teacher.specialization" required
+      <select class="form-select" name="specialization_teacher" [(ngModel)]="teacher.courseId" required
         #specializationInput="ngModel"
         [ngClass]="{'is-invalid': specializationInput.invalid && (specializationInput.dirty || specializationInput.touched), 'is-valid': specializationInput.valid && specializationInput.touched}">
         <option value="" disabled selected>Selecciona una especialización</option>
-        <option value="Matematica">Matematica</option>
+        <option value="1">Matematica</option>
         <option value="Comunicacion">Comunicacion</option>
         <option value="Quimica">Quimica</option>
         <option value="Arte">Arte</option>
@@ -130,11 +130,11 @@
       <label for="document_type_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Tipo de documento</span>
       <select class="form-select" aria-label="Tipo de Documento" name="document_type_teacher"
-        [(ngModel)]="teacher.documentType" required #documentTypeInput="ngModel"
+        [(ngModel)]="teacher.documentTypeId" required #documentTypeInput="ngModel"
         [ngClass]="{'is-invalid': documentTypeInput.invalid && (documentTypeInput.dirty || documentTypeInput.touched), 'is-valid': documentTypeInput.valid && documentTypeInput.touched}">
         <option value="" disabled selected>Seleccione un tipo de documento</option>
-        <option value="DNI">DNI</option>
-        <option value="CNE">CNE</option>
+        <option value="1">DNI</option>
+        <option value="2">CNE</option>
       </select>
       <div class="text-danger"
         *ngIf="documentTypeInput.invalid && (documentTypeInput.dirty || documentTypeInput.touched)">
@@ -146,32 +146,33 @@
     </div>
 
 
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="document_number_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Número de Documento</span>
       <input type="text" class="form-control" placeholder="Número de Documento" aria-label="Número de Documento"
         aria-describedby="basic-addon1" name="document_number_teacher" [(ngModel)]="teacher.documentNumber" required
-        [pattern]="teacher.documentType === 'DNI' ? '[0-9]{8}' : '[0-9]{12}'" #documentNumberInput="ngModel"
+        [pattern]="teacher.documentTypeId === '1' ? '[0-9]{8}' : '[0-9]{12}'" #documentNumberInput="ngModel"
         [ngClass]="{'is-invalid': documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched), 'is-valid': documentNumberInput.valid && documentNumberInput.touched}" />
       <div class="text-danger"
         *ngIf="documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched)">
         <div *ngIf="documentNumberInput.hasError('required')">El número de documento es requerido.</div>
         <div *ngIf="documentNumberInput.hasError('pattern')">El número de documento debe contener {{
-          teacher.documentType === 'DNI' ? '8' : '12' }} dígitos numéricos.</div>
+          teacher.documentTypeId === '1' ? '8' : '12' }} dígitos numéricos.</div>
       </div>
       <div class="text-success" *ngIf="documentNumberInput.valid && documentNumberInput.touched">
         Correcto
       </div>
-    </div>
+    </div> -->
 
     <div class="mb-3">
       <label for="email_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Correo Electrónico</span>
       <input type="email" class="form-control" placeholder="Correo Electrónico" aria-label="Correo Electrónico"
-        aria-describedby="basic-addon1" name="email_teacher" [(ngModel)]="teacher.email" #emailInput="ngModel"
+        aria-describedby="basic-addon1" name="email_teacher" [(ngModel)]="teacher.email" required #emailInput="ngModel"
         [ngClass]="{'is-invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched), 'is-valid': emailInput.valid && emailInput.touched}"
         pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
       <div class="text-danger" *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+        <div *ngIf="emailInput.hasError('required')">El correo electrónico es requerido.</div>
         <div *ngIf="emailInput.hasError('email')">Ingrese un correo electrónico válido.</div>
         <div *ngIf="emailInput.hasError('pattern')">Ingrese un correo electrónico con el formato correcto (por
           ejemplo,
@@ -181,24 +182,23 @@
         Correcto
       </div>
     </div>
-        
 
     <div class="mb-3">
       <label for="phone_number_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Número de Teléfono</span>
       <input type="text" class="form-control" placeholder="Número de Teléfono" aria-label="Número de Teléfono"
-        aria-describedby="basic-addon1" name="phone_number_teacher" [(ngModel)]="teacher.phoneNumber"
+        aria-describedby="basic-addon1" name="phone_number_teacher" [(ngModel)]="teacher.phoneNumber" required
         pattern="^9\d{8}$" #phoneInput="ngModel"
         [ngClass]="{'is-invalid': phoneInput.invalid && (phoneInput.dirty || phoneInput.touched), 'is-valid': phoneInput.valid && phoneInput.touched}" />
       <div class="text-danger" *ngIf="phoneInput.invalid && (phoneInput.dirty || phoneInput.touched)">
-        <div *ngIf="phoneInput.hasError('pattern') && phoneInput.value !== ''">Ingrese un número de teléfono válido que comience con 9 y tenga 9 dígitos.</div>
+        <div *ngIf="phoneInput.hasError('required')">El número de teléfono es requerido.</div>
+        <div *ngIf="phoneInput.hasError('pattern')">Ingrese un número de teléfono válido que comience con 9 y tenga 9
+          dígitos.</div>
       </div>
       <div class="text-success" *ngIf="phoneInput.valid && phoneInput.touched">
         Correcto
       </div>
-      (Opcional)
     </div>
-    
 
     <div class="modal-footer">
       <button type="button" class="btn btn-primary" (click)="create()">Guardar</button>

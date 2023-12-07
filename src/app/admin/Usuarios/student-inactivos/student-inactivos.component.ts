@@ -23,10 +23,10 @@ export class StudentInactivosComponent implements OnInit {
   }
 
   restoreStudent(student: Student): void {
-    if (student && student.id_student) {
+    if (student && student.id) {
       Swal.fire({
         title: '¿Restaurar estudiante?',
-        text: `¿Quieres restaurar al estudiante ${student.names_student}?`,
+        text: `¿Quieres restaurar al estudiante ${student.names}?`,
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -35,9 +35,9 @@ export class StudentInactivosComponent implements OnInit {
         cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.studentService.restoreStudent(student.id_student).subscribe(() => {
+          this.studentService.restoreStudent(student.id).subscribe(() => {
             this.inactiveStudents = this.inactiveStudents.filter(std => std !== student);
-            Swal.fire('Restaurado', `Estudiante ${student.names_student} restaurado con éxito`, 'success');
+            Swal.fire('Restaurado', `Estudiante ${student.names} restaurado con éxito`, 'success');
           },
             error => {
               console.error('Error al restaurar al estudiante:', error);
@@ -50,10 +50,10 @@ export class StudentInactivosComponent implements OnInit {
   }
 
   deleteStudent(student: Student): void {
-    if (student && student.id_student) {
+    if (student && student.id) {
       Swal.fire({
         title: '¿Eliminar estudiante?',
-        text: `Si eliminas al estudiante ${student.names_student}, se eliminará completamente.`,
+        text: `Si eliminas al estudiante ${student.names}, se eliminará completamente.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -62,10 +62,10 @@ export class StudentInactivosComponent implements OnInit {
         cancelButtonText: 'Cancelar'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.studentService.delete(student.id_student).subscribe(
+          this.studentService.delete(student.id).subscribe(
             response => {
               this.inactiveStudents = this.inactiveStudents.filter(std => std !== student);
-              Swal.fire('Eliminado', `Estudiante ${student.names_student} eliminado con éxito`, 'success');
+              Swal.fire('Eliminado', `Estudiante ${student.names} eliminado con éxito`, 'success');
             },
             error => {
               console.error('Error al eliminar al estudiante inactivo:', error);

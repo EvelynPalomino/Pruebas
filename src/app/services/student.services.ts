@@ -8,7 +8,7 @@ import { Student } from '../models/student.model';
   providedIn: 'root'
 })
 export class StudentService {
-  private urlNotesedu: string = 'http://localhost:8080/v1/students';
+  private urlNotesedu: string = 'http://localhost:8085/app/v1/students';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(private http: HttpClient) { }
@@ -30,7 +30,7 @@ export class StudentService {
   }
 
   update(student: Student): Observable<Student> {
-    return this.http.put<Student>(`${this.urlNotesedu}/${student.id_student}`, student, { headers: this.httpHeaders });
+    return this.http.put<Student>(`${this.urlNotesedu}/${student.id}`, student, { headers: this.httpHeaders });
   }
 
   deleteDeactivate(id: number): Observable<any> {
@@ -45,7 +45,7 @@ export class StudentService {
 
   getInactiveStudents(): Observable<Student[]> {
     return this.getStudents().pipe(
-      map(students => students.filter(student => student.state_student === 'I'))
+      map(students => students.filter(student => student.state === 'I'))
     );
   }
 }
