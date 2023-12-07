@@ -63,7 +63,7 @@ export class TeacherComponent implements OnInit {
   //               .includes(this.searchSpecialty.toLowerCase()))
   //       );
 
-  //    k
+     
   // Ajusta la función clearSearch
   clearSearch() {
     this.searchName = '';
