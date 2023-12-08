@@ -11,6 +11,7 @@ import jsPDF from 'jspdf';
 import { StudentFormComponent } from 'src/app/forms/student-form/student-form.component';
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
@@ -22,6 +23,7 @@ export class StudentComponent implements OnInit {
   showForm: boolean = false;
   editStudent: Student | null = null;
 
+
   constructor(
     private toastr: ToastrService,
     private studentService: StudentService,
@@ -29,7 +31,43 @@ export class StudentComponent implements OnInit {
     private http: HttpClient,
     public activateRoute: ActivatedRoute
   ) { }
+  searchName: string = '';
+  searchLastName: string = '';
+  searchDocumentNumber: string = '';
+  searchDocumentType: string = '';
+  searchSpecialty: string = '';
 
+  // Ajusta la función searchStudent
+  searchStudent() {
+    this.studentService.getStudents().subscribe((students) => {
+      const filteredStudents = students
+        .filter((student) => student.state === 'A')
+        .filter(
+          (student) =>
+            (this.searchName === '' ||
+              student.names.toLowerCase().includes(this.searchName.toLowerCase())) &&
+            (this.searchLastName === '' ||
+              student.lastName.toLowerCase().includes(this.searchLastName.toLowerCase()))
+        );
+
+      this.students = filteredStudents;
+
+      // Actualiza la visibilidad del mensaje en función de si hay resultados o no
+      // Assuming you have a property like 'noResultsMessageVisible' in your component
+      // this.noResultsMessageVisible = filteredStudents.length === 0;
+    });
+  }
+
+  // Ajusta la función clearSearch
+  clearSearch() {
+    this.searchName = '';
+    this.searchLastName = '';
+    this.searchDocumentNumber = '';
+    this.searchDocumentType = '';
+    this.searchSpecialty = ''; // Agrega la limpieza del campo de especialidad
+    this.students = [];
+
+  }
   ngOnInit() {
     this.studentService.getStudents().subscribe((students) => {
       // Filtra solo los estudiantes con stateTeacher === 'A'
@@ -91,7 +129,7 @@ export class StudentComponent implements OnInit {
   }
   closeEditModal() {
     this.showForm = false;
-  }  closeCreatedModal() {
+  } closeCreatedModal() {
     this.showForm = false;
   }
   deleteStudent(student: Student): void {
@@ -113,7 +151,7 @@ export class StudentComponent implements OnInit {
           .subscribe((response) => {
             // Elimina al estudiante de la lista después de la eliminación exitosa
             this.students = this.students.filter((std) => std !== student);
-  
+
             // Muestra un mensaje de éxito después de la eliminación
             Swal.fire(
               'Eliminado',
@@ -124,5 +162,5 @@ export class StudentComponent implements OnInit {
       }
     });
   }
-  
+
 }

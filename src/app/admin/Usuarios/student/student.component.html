@@ -5,58 +5,83 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-9">
+      <!-- Contenido principal -->
       <div class="card border-primary mb-3">
-        <div class="card-header">Student</div>
+        <div class="card-header">Estudiantes</div>
         <div class="card-body text-primary">
-          <h5 class="card-title">Listado de Estudiantes activos</h5>
-          <button type="button" class="btn btn-primary mb-3" (click)="openCreateModal()">Crear Estudiante</button>
-          <div class="my-5 text-left"></div>
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered w-100 small">
-              <thead>
-                <tr class="table-primary">
-                  <th>ID</th>
-                  <th>Nombres</th>
-                  <th>Apellidos</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
-                  <th>Nivel Académico</th>
-                  <th>Grado</th>
-                  <th>Email</th>
-                  <th>Celular</th>
-                  <th>Contraseña</th>
-                  <th>Acción</th>
-                  <th>Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of students">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.names }}</td>
-                  <td>{{ item.lastName }}</td>
-                  <td>{{ item.documentTypeId }}</td>
-                  <td>{{ item.numberDocument }}</td>
-                  <td>{{ item.academicLevelId }}</td>
-                  <td>{{ item.gradeId }}</td>
-                  <td>{{ item.email }}</td>
-                  <td>{{ item.cellPhone }}</td>
-                  <td>{{ item.password }}</td>
-                  <td> 
-                    <button type="button" class="btn btn-warning btn-sm" (click)="openEditModal(item)">Editar</button>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteStudent(item)">Eliminar</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <h5 class="card-title">Listado de estudiantes activos</h5>
+          <!-- Formulario de búsqueda -->
+          <div class="search-container text-center">
+            <form class="form-inline mb-3">
+              <div class="form-group mr-2">
+                <label for="searchName" class="sr-only">Nombre:</label>
+                <input type="text" class="form-control" id="searchName" name="searchName" placeholder="Nombre"
+                  [(ngModel)]="searchName" />
+              </div>
+              <div class="form-group mr-2">
+                <label for="searchLastName" class="sr-only">Apellido:</label>
+                <input type="text" class="form-control" id="searchLastName" name="searchLastName" placeholder="Apellido"
+                  [(ngModel)]="searchLastName" />
+              </div>
+
+              <button type="button" class="btn btn-primary" (click)="searchStudent()">Buscar</button>
+              <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
+            </form>
+
+            <button type="button" class="btn btn-primary mb-3" (click)="openCreateModal()">Crear Estudiante</button>
+
+
+            <div class="my-5 text-left"></div>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered w-100 small">
+                <thead>
+                  <!-- Encabezados de la tabla -->
+                  <tr class="table-primary">
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Tipo de documento</th>
+                    <th>Número de documento</th>
+                    <th>Nivel Académico</th>
+                    <th>Grado</th>
+                    <th>Email</th>
+                    <th>Celular</th>
+                    <th>Contraseña</th>
+                    <th>Acción</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of students">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.names }}</td>
+                    <td>{{ item.lastName }}</td>
+                    <td>{{ item.documentTypeId }}</td>
+                    <td>{{ item.numberDocument }}</td>
+                    <td>{{ item.academicLevelId }}</td>
+                    <td>{{ item.gradeId }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.cellPhone }}</td>
+                    <td>{{ item.password }}</td>
+                    <td>
+                      <button type="button" class="btn btn-warning btn-sm" (click)="openEditModal(item)">Editar</button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-sm"
+                        (click)="deleteStudent(item)">Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <br>
+    <br>
+    <br>
+
+    <app-footer></app-footer>
   </div>
-  <br>
-  <br>
-  <br>
-  <app-footer></app-footer>
 </div>

@@ -7,7 +7,6 @@ export class Teacher {
   passwordTeacher: string = '';
   stateTeacher: string = '';
   registrationDate = '';
-  dateOfBirth: Date = new Date(); 
   salary: number = 0.0;
   courseId: number = 0;
   documentTypeId: number = 0;

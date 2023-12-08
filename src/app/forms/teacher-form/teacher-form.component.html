@@ -66,22 +66,6 @@
         Contraseña válida.
       </div>
     </div>
-    <div class="mb-3">
-      <label for="date_of_birth_teacher"></label>
-      <span class="input-group-text" id="basic-addon1">Fecha de Nacimiento</span>
-      <input type="text" class="form-control" placeholder="dd-mm-aaaa" aria-label="Fecha de Nacimiento"
-        aria-describedby="basic-addon1" name="date_of_birth_teacher" [(ngModel)]="teacher.dateOfBirth" required
-        pattern="^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$" (input)="onDateInput($event)" #dateInput="ngModel"
-        [ngClass]="{'is-invalid': dateInput.invalid && (dateInput.dirty || dateInput.touched), 'is-valid': dateInput.valid && dateInput.touched}" />
-      <div class="text-danger" *ngIf="dateInput.invalid && (dateInput.dirty || dateInput.touched)">
-        <div *ngIf="dateInput.hasError('required')">La fecha de nacimiento es requerida.</div>
-        <div *ngIf="invalidDateFormat" class="text-danger">Ingrese una fecha válida en el formato dd-mm-aaaa.</div>
-        <div *ngIf="invalidAge" class="text-danger">Debe ser mayor de 25 años.</div>
-      </div>
-      <div class="text-success" *ngIf="dateInput.valid && dateInput.touched">
-        Fecha válida
-      </div>
-    </div>
 
 
     <div class="mb-3">
@@ -99,77 +83,77 @@
       </div>
     </div>
 
-    <div class="mb-3">
-      <label for="specialization_teacher"></label>
-      <span class="input-group-text" id="basic-addon1">Especialización</span>
-      <select class="form-select" name="specialization_teacher" [(ngModel)]="teacher.courseId" required
-        #specializationInput="ngModel"
-        [ngClass]="{'is-invalid': specializationInput.invalid && (specializationInput.dirty || specializationInput.touched), 'is-valid': specializationInput.valid && specializationInput.touched}">
-        <option value="" disabled selected>Selecciona una especialización</option>
+    <div class="mb-3 position-relative">
+      <label for="courseId_teacher"></label>
+      <span class="input-group-text" id="basic-addon1">Especializacion</span>
+      <select class="form-select" name="courseId_teacher" [(ngModel)]="teacher.courseId" required
+        #courseIdInput="ngModel"
+        [ngClass]="{ 'is-invalid': courseIdInput.invalid && (courseIdInput.dirty || courseIdInput.touched), 'is-valid': courseIdInput.valid && courseIdInput.touched }">
+        <option value="" disabled selected>Seleccione un curso</option>
         <option value="1">Matematica</option>
-        <option value="Comunicacion">Comunicacion</option>
-        <option value="Quimica">Quimica</option>
-        <option value="Arte">Arte</option>
-        <option value="Personal Social">Personal Social</option>
-        <option value="Educacion Fisica">Educacion Fisica</option>
-        <option value="Historia">Historia</option>
-
+        <option value="2">Ciencia</option>
+        <option value="3">English</option>
+        <option value="4">Historia</option>
+        <option value="5">Personal Social</option>
+        <option value="6">Arte</option>
+        <option value="7">Biologia</option>
+        <option value="8">Geografia</option>
+        <option value="9">Computación</option>
+        <option value="10">Literatura</option>
+        <option value="11">Arte</option>
+        <option value="12">Ciencia y Tecnologia</option>
+        <option value="13">Religión</option>
+        <option value="14">Comunicación</option>
+        <option value="15">Comprensión Lectora</option>
       </select>
-      <div class="text-danger"
-        *ngIf="specializationInput.invalid && (specializationInput.dirty || specializationInput.touched)">
-        <div *ngIf="specializationInput.hasError('required')">La especialización es requerida.</div>
-        <div *ngIf="specializationInput.hasError('pattern')">No se permiten números en la especialización.</div>
+      <div class="text-danger" *ngIf="courseIdInput.invalid && (courseIdInput.dirty || courseIdInput.touched)">
+        <div *ngIf="courseIdInput.hasError('required')">La especializacion es requerido.</div>
       </div>
-      <div class="text-success" *ngIf="specializationInput.valid && specializationInput.touched">
+      <div class="text-success" *ngIf="courseIdInput.valid && courseIdInput.touched">
         Correcto
       </div>
     </div>
-    
 
-    <div class="mb-3">
-      <label for="document_type_teacher"></label>
+
+    <div class="mb-3 position-relative">
+      <label for="documentTypeId_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Tipo de documento</span>
-      <select class="form-select" aria-label="Tipo de Documento" name="document_type_teacher"
-        [(ngModel)]="teacher.documentTypeId" required #documentTypeInput="ngModel"
-        [ngClass]="{'is-invalid': documentTypeInput.invalid && (documentTypeInput.dirty || documentTypeInput.touched), 'is-valid': documentTypeInput.valid && documentTypeInput.touched}">
+      <select class="form-select" name="documentTypeId_teacher" [(ngModel)]="teacher.documentTypeId" required
+        #documentTypeIdInput="ngModel"
+        [ngClass]="{ 'is-invalid': documentTypeIdInput.invalid && (documentTypeIdInput.dirty || documentTypeIdInput.touched), 'is-valid': documentTypeIdInput.valid && documentTypeIdInput.touched }">
         <option value="" disabled selected>Seleccione un tipo de documento</option>
         <option value="1">DNI</option>
         <option value="2">CNE</option>
       </select>
       <div class="text-danger"
-        *ngIf="documentTypeInput.invalid && (documentTypeInput.dirty || documentTypeInput.touched)">
-        <div *ngIf="documentTypeInput.hasError('required')">Seleccione un tipo de documento.</div>
+        *ngIf="documentTypeIdInput.invalid && (documentTypeIdInput.dirty || documentTypeIdInput.touched)">
+        <div *ngIf="documentTypeIdInput.hasError('required')">Seleccione un tipo de documento.</div>
       </div>
-      <div class="text-success" *ngIf="documentTypeInput.valid && documentTypeInput.touched">
+      <div class="text-success" *ngIf="documentTypeIdInput.valid && documentTypeIdInput.touched">
         Correcto
       </div>
     </div>
 
-
     <div class="mb-3">
       <label for="document_number_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Número de Documento</span>
-      <input 
-        type="text" 
-        class="form-control" 
-        placeholder="Número de Documento" 
-        aria-label="Número de Documento"
-        aria-describedby="basic-addon1" 
-        name="document_number_teacher" 
-        [(ngModel)]="teacher.documentNumber" 
-        required
-        [pattern]="teacher.documentTypeId === 1 ? '[0-9]{8}' : '[0-9]{12}'"
-        #documentNumberInput="ngModel"
+      <input type="text" class="form-control" placeholder="Número de Documento" aria-label="Número de Documento"
+        aria-describedby="basic-addon1" name="document_number_teacher" [(ngModel)]="teacher.documentNumber" required
+        [pattern]="teacher.documentTypeId === 1 ? '[0-9]{8}' : '[0-9]{12}'" #documentNumberInput="ngModel"
         [ngClass]="{'is-invalid': documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched), 'is-valid': documentNumberInput.valid && documentNumberInput.touched}" />
-      <div class="text-danger" *ngIf="documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched)">
+      <div class="text-danger"
+        *ngIf="documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched)">
         <div *ngIf="documentNumberInput.hasError('required')">El número de documento es requerido.</div>
-        <div *ngIf="documentNumberInput.hasError('pattern')">El número de documento debe contener {{ teacher.documentTypeId === 1 ? '8' : '12' }} dígitos numéricos.</div>
+        <div *ngIf="documentNumberInput.hasError('pattern')">El número de documento debe contener {{
+          teacher.documentTypeId === 1 ? '8' : '12' }} dígitos numéricos.</div>
       </div>
       <div class="text-success" *ngIf="documentNumberInput.valid && documentNumberInput.touched">
         Correcto
       </div>
     </div>
     
+    
+
 
     <div class="mb-3">
       <label for="email_teacher"></label>

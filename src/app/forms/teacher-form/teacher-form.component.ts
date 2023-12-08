@@ -31,20 +31,8 @@ throw new Error('Method not implemented.');
   invalidDateFormat: boolean = false;
   invalidAge: boolean = false;
 
-  onDateInput(event: any) {
-    const dateRegex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
-    this.invalidDateFormat = !dateRegex.test(this.teacher.dateOfBirth.toString()); // Convierte a cadena para validar el formato
+
   
-    if (!this.invalidDateFormat) {
-      const enteredDate: Date = new Date(this.teacher.dateOfBirth);
-      const currentDate: Date = new Date();
-  
-      const ageDifference = currentDate.getFullYear() - enteredDate.getFullYear();
-      this.invalidAge = ageDifference < 25;
-    } else {
-      this.invalidAge = false; // Resetear la bandera si la fecha no es válida
-    }
-  }
   
 
   constructor(
