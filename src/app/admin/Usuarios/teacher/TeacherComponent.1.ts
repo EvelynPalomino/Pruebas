@@ -37,33 +37,28 @@ export class TeacherComponent implements OnInit {
   searchSpecialty: string = '';
 
   // // Ajusta la función searchTeachers
-  // searchTeachers() {
-  //   this.teacherService.getTeachers().subscribe((teachers) => {
-  //     const filteredTeachers = teachers
-  //       .filter((teacher) => teacher.stateTeacher === 'A')
-  //       .filter(
-  //         (teacher) => (this.searchName === '' ||
-  //           teacher.nameTeacher
-  //             .toLowerCase()
-  //             .includes(this.searchName.toLowerCase())) &&
-  //           (this.searchLastName === '' ||
-  //             teacher.lastNameTeacher
-  //               .toLowerCase()
-  //               .includes(this.searchLastName.toLowerCase())) &&
-  //           ((this.searchDocumentType === '' &&
-  //             (teacher.documentType === 'DNI' ||
-  //               teacher.documentType === 'CNE')) ||
-  //             (this.searchDocumentType !== '' &&
-  //               teacher.documentTypeId === this.searchDocumentType)) &&
-  //           (this.searchDocumentNumber === '' ||
-  //             teacher.documentNumber.includes(this.searchDocumentNumber)) &&
-  //           (this.searchSpecialty === '' ||
-  //             teacher.specialization
-  //               .toLowerCase()
-  //               .includes(this.searchSpecialty.toLowerCase()))
-  //       );
+  searchTeachers() {
+    this.teacherService.getTeachers().subscribe((teachers) => {
+      const filteredTeachers = teachers
+        .filter((teacher) => teacher.stateTeacher === 'A')
+        .filter(
+          (teacher) =>
+            (this.searchName === '' ||
+              teacher.nameTeacher.toLowerCase().includes(this.searchName.toLowerCase())) &&
+            (this.searchLastName === '' ||
+              teacher.lastNameTeacher.toLowerCase().includes(this.searchLastName.toLowerCase())) &&
+            (this.searchDocumentNumber === '' ||
+              teacher.documentNumber.includes(this.searchDocumentNumber)) &&
+            (this.searchSpecialty === '' ||
+              this.convertCourse(teacher.courseId) === this.searchSpecialty) // Filtrar por especialidad
 
-     
+        );
+
+      this.teachers = filteredTeachers;
+
+    });
+  }
+
   // Ajusta la función clearSearch
   clearSearch() {
     this.searchName = '';
@@ -73,6 +68,62 @@ export class TeacherComponent implements OnInit {
     this.searchSpecialty = ''; // Agrega la limpieza del campo de especialidad
     this.teachers = [];
     this.noResultsMessageVisible = false;
+  }
+
+  convertDocumentType(type: number | string): string {
+    // Si el tipo es un número, convertirlo a cadena
+    if (typeof type === 'number') {
+      type = type.toString();
+    }
+
+    switch (type) {
+      case '1':
+        return 'DNI';
+      case '2':
+        return 'CNE';
+      default:
+        return 'Desconocido';
+    }
+  }
+  convertCourse(courseId: number | string): string {
+    if (typeof courseId === 'number') {
+      courseId = courseId.toString();
+    }
+
+    switch (courseId) {
+      case '1':
+        return 'Matematica';
+      case '2':
+        return 'Ciencia';
+      case '3':
+        return 'English';
+      case '4':
+        return 'Historia';
+      case '5':
+        return 'Personal Social';
+      case '6':
+        return 'Arte';
+      case '7':
+        return 'Biologia';
+      case '8':
+        return 'Geografia';
+      case '9':
+        return 'Computación';
+      case '10':
+        return 'Literatura';
+      case '11':
+        return 'Arte';
+      case '12':
+        return 'Ciencia y Tecnologia';
+      case '13':
+        return 'Religión';
+      case '14':
+        return 'Comunicación';
+      case '15':
+        return 'Comprensión Lectora';
+      default:
+        return 'Desconocido';
+    }
   }
 
   ngOnInit() {
@@ -250,13 +301,13 @@ export class TeacherComponent implements OnInit {
       }
     );
   }
-  
+
   generatePDF(data: any[]) {
     const pdf = new jsPDF();
-  
+
     const headers = Object.keys(data[0]);
     const pdfData = data.map(item => Object.values(item));
-  
+
     pdf.save('TeacherActivos.pdf');
   }
 }

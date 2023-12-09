@@ -34,11 +34,13 @@ export class StudentComponent implements OnInit {
   searchName: string = '';
   searchLastName: string = '';
   searchDocumentNumber: string = '';
+  searchAcademicLevel : string = '';
   searchDocumentType: string = '';
   searchSpecialty: string = '';
 
   // Ajusta la función searchStudent
   searchStudent() {
+
     this.studentService.getStudents().subscribe((students) => {
       const filteredStudents = students
         .filter((student) => student.state === 'A')
@@ -47,7 +49,10 @@ export class StudentComponent implements OnInit {
             (this.searchName === '' ||
               student.names.toLowerCase().includes(this.searchName.toLowerCase())) &&
             (this.searchLastName === '' ||
-              student.lastName.toLowerCase().includes(this.searchLastName.toLowerCase()))
+              student.lastName.toLowerCase().includes(this.searchLastName.toLowerCase())) &&
+            (this.searchDocumentNumber === '' ||
+              student.numberDocument.includes(this.searchDocumentNumber)) &&
+            (this.searchAcademicLevel === '' || student.academicLevelId.toString() === this.searchAcademicLevel)
         );
 
       this.students = filteredStudents;
@@ -64,10 +69,119 @@ export class StudentComponent implements OnInit {
     this.searchLastName = '';
     this.searchDocumentNumber = '';
     this.searchDocumentType = '';
+    this.searchAcademicLevel = '';
     this.searchSpecialty = ''; // Agrega la limpieza del campo de especialidad
     this.students = [];
 
   }
+  convertDocumentType(type: number | string): string {
+    // Si el tipo es un número, convertirlo a cadena
+    if (typeof type === 'number') {
+      type = type.toString();
+    }
+
+    switch (type) {
+      case '1':
+        return 'DNI';
+      case '2':
+        return 'CNE';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  // Función para convertir el grado académico
+  convertAcademicDegree(degree: number | string): string {
+    // Si el grado es un número, convertirlo a cadena
+    if (typeof degree === 'number') {
+      degree = degree.toString();
+    }
+
+    switch (degree) {
+      case '1':
+        return 'Inicial';
+      case '2':
+        return 'Primaria';
+      case '3':
+        return 'Secundaria';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+  convertGradeId(gradeId: number | string): string {
+    if (typeof gradeId === 'number') {
+      gradeId = gradeId.toString();
+    }
+
+    switch (gradeId) {
+      case '1':
+        return '1 "A"';
+      case '2':
+        return '1 "B"';
+      case '3':
+        return '1 "C"';
+      case '4':
+        return '1 "D"';
+      case '5':
+        return '1 "E"';
+      case '6':
+        return '2 "A"';
+      case '7':
+        return '2 "B"';
+      case '8':
+        return '2 "C"';
+      case '9':
+        return '2 "D"';
+      case '10':
+        return '2 "E"';
+      case '11':
+        return '3 "A"';
+      case '12':
+        return '3 "B"';
+      case '13':
+        return '3 "C"';
+      case '14':
+        return '3 "D"';
+      case '15':
+        return '3 "E"';
+      case '16':
+        return '4 "A"';
+      case '17':
+        return '4 "B"';
+      case '18':
+        return '4 "C"';
+      case '19':
+        return '4 "D"';
+      case '20':
+        return '4 "E"';
+      case '21':
+        return '5 "A"';
+      case '22':
+        return '5 "B"';
+      case '23':
+        return '5 "C"';
+      case '24':
+        return '5 "D"';
+      case '25':
+        return '5 "E"';
+      case '26':
+        return '6 "A"';
+      case '27':
+        return '6 "B"';
+      case '28':
+        return '6 "C"';
+      case '29':
+        return '6 "D"';
+      case '30':
+        return '6 "E"';
+      default:
+        return 'Desconocido';
+    }
+  }
+
+
+
   ngOnInit() {
     this.studentService.getStudents().subscribe((students) => {
       // Filtra solo los estudiantes con stateTeacher === 'A'

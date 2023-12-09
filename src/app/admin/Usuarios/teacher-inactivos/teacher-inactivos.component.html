@@ -46,12 +46,11 @@
               <tbody>
                 <!-- Contenido de la tabla -->
                 <tr *ngFor="let item of inactiveTeachers">
-                  <td>{{ item.idTeacher }}</td>
                   <td>{{ item.nameTeacher }}</td>
                   <td>{{ item.lastNameTeacher }}</td>
                   <td>{{ item.salary }}</td>
-                  <td>{{ item.courseId }}</td>
-                  <td>{{ item.documentTypeId }}</td>
+                  <td>{{ convertCourse(item.courseId) }}</td>
+                  <td>{{ convertDocumentType(item.documentTypeId) }}</td>
                   <td>{{ item.documentNumber }}</td>
                   <td>{{ item.email }}</td>
                   <td>{{ item.phoneNumber }}</td>

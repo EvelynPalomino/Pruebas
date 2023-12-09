@@ -23,6 +23,23 @@
                 <input type="text" class="form-control" id="searchLastName" name="searchLastName" placeholder="Apellido"
                   [(ngModel)]="searchLastName" />
               </div>
+              <!-- Número de Documento Field -->
+              <div class="form-group mr-2">
+                <label for="searchDocumentNumber" class="sr-only">Número de Documento:</label>
+                <input type="text" class="form-control" id="searchDocumentNumber" name="searchDocumentNumber"
+                  placeholder="Número de Documento" [(ngModel)]="searchDocumentNumber" />
+              </div>
+
+              <div class="form-group mr-2">
+                <label for="searchAcademicLevel" class="sr-only">Nivel Académico:</label>
+                <select class="form-control" id="searchAcademicLevel" name="searchAcademicLevel" [(ngModel)]="searchAcademicLevel">
+                  <option value="">Seleccione Nivel Académico</option>
+                  <option value="1">Inicial</option>
+                  <option value="2">Primaria</option>
+                  <option value="3">Secundaria</option>
+                </select>
+              </div>
+            
 
               <button type="button" class="btn btn-primary" (click)="searchStudent()">Buscar</button>
               <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
@@ -37,7 +54,6 @@
                 <thead>
                   <!-- Encabezados de la tabla -->
                   <tr class="table-primary">
-                    <th>ID</th>
                     <th>Nombres</th>
                     <th>Apellidos</th>
                     <th>Tipo de documento</th>
@@ -53,13 +69,12 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of students">
-                    <td>{{ item.id }}</td>
                     <td>{{ item.names }}</td>
                     <td>{{ item.lastName }}</td>
-                    <td>{{ item.documentTypeId }}</td>
+                    <td>{{ convertDocumentType(item.documentTypeId) }}</td>
                     <td>{{ item.numberDocument }}</td>
-                    <td>{{ item.academicLevelId }}</td>
-                    <td>{{ item.gradeId }}</td>
+                    <td>{{ convertAcademicDegree(item.academicLevelId) }}</td>
+                    <td>{{ convertGradeId(item.gradeId) }}</td>
                     <td>{{ item.email }}</td>
                     <td>{{ item.cellPhone }}</td>
                     <td>{{ item.password }}</td>

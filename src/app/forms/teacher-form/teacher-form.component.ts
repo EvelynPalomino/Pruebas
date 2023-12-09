@@ -14,12 +14,14 @@ import Swal from 'sweetalert2';
   styleUrls: ['./teacher-form.component.css']
 })
 export class TeacherFormComponent implements OnInit {
-isAgeValid() {
-throw new Error('Method not implemented.');
-}
-calculateAge(arg0: string) {
-throw new Error('Method not implemented.');
-}
+  isAgeValid() {
+    throw new Error('Method not implemented.');
+  }
+  calculateAge(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
+  documentError: boolean = false;
+  documentErrorMessage: string = '';
 
   teacher: Teacher = new Teacher();
   TeacherForm: any;
@@ -32,8 +34,7 @@ throw new Error('Method not implemented.');
   invalidAge: boolean = false;
 
 
-  
-  
+
 
   constructor(
     public teacherServices: TeacherServices,
@@ -42,6 +43,30 @@ throw new Error('Method not implemented.');
     private location: Location,
     private modalService: NgbModal  // Inyecta NgbModal en el constructor
   ) { }
+
+  onTypeDocumentChange() {
+    this.validateDocument();
+  }
+
+  validateDocument() {
+    const documentTypeId = this.teacher.documentTypeId;
+    const documentValue = this.teacher.documentNumber;
+
+
+    if (documentTypeId === 2) {
+      console.log(documentTypeId);
+      this.documentError = documentValue.length !== 12 || !/^\d{10}$/.test(documentValue);
+      this.documentErrorMessage = 'El número de documento debe tener 10 dígitos.';
+    } else if (documentTypeId === 1) {
+      console.log(documentTypeId);
+      this.documentError = documentValue.length !== 8 || !/^\d{8}$/.test(documentValue);
+      this.documentErrorMessage = 'El número de documento debe tener 8 dígitos.';
+    } else {
+      // Puedes agregar lógica para otros tipos de documentos si es necesario
+      this.documentError = false;
+      this.documentErrorMessage = '';
+    }
+  }
 
 
   ngOnInit() {

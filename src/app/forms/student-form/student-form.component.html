@@ -11,13 +11,13 @@
     <div class="mb-1 position-relative">
         <label for="name"></label>
         <span class="input-group-text" id="basic-addon1">Nombre</span>
-        <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names"
-            required pattern="^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]*[A-ZÁÉÍÓÚÑ]$" #namesInput="ngModel"
+        <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names" required
+            pattern="^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]*[A-ZÁÉÍÓÚÑ]$" #namesInput="ngModel"
             [ngClass]="{'is-invalid': namesInput.invalid && (namesInput.dirty || namesInput.touched), 'is-valid': namesInput.valid && namesInput.touched}" />
         <div *ngIf="namesInput.invalid && (namesInput.dirty || namesInput.touched)" class="text-danger">
             <div
                 *ngIf="studentForm.controls['names'].hasError('required') || studentForm.controls['names'].hasError('pattern')">
-                El nombre es requerido y debe comenzar y terminar con una letra y puede contener letras y espacios.
+                El nombre es requerido y debe ser en mayusculas, comenzar y terminar con una letra y puede contener letras y espacios.
             </div>
         </div>
         <div *ngIf="namesInput.valid && namesInput.touched" class="text-success">
@@ -26,19 +26,32 @@
     </div>
 
     <!-- Apellido Field -->
-    <div class="mb-1 position-relative">
-        <label for="last_name"></label>
+    <div class="mb-3 position-relative">
+        <label for="last_nameteacher"></label>
         <span class="input-group-text" id="basic-addon1">Apellido</span>
-        <input type="text" class="form-control" placeholder="Apellido" [(ngModel)]="Student.lastName"
-            name="last_name" />
-    </div>
+        <input type="text" class="form-control" placeholder="Apellido" aria-label="Username"
+          aria-describedby="basic-addon1" name="last_nameteacher" [(ngModel)]="Student.lastName" required
+          pattern="^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]*[A-ZÁÉÍÓÚÑ]$" #lastNameInput="ngModel"
+          [ngClass]="{'is-invalid': lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched), 'is-valid': lastNameInput.valid && lastNameInput.touched}" />
+        <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="text-danger">
+          <br>
+          <div *ngIf="studentForm.controls['last_nameteacher'].hasError('required')">El apellido es requerido.</div>
+          <div *ngIf="studentForm.controls['last_nameteacher'].hasError('pattern')">El apellido debe comenzar y terminar
+            con una letra y puede contener letras y espacios.</div>
+        </div>
+        <div *ngIf="lastNameInput.valid && lastNameInput.touched" class="text-success">
+          Apellido válido.
+        </div>
+      </div>
 
     <!-- Type Document Field -->
-    <div class="mb-1 position-relative">
-        <label for="type_document"></label>
+    <div class="form-group">
+        <label for="last_name"></label>
         <span class="input-group-text" id="basic-addon1">Tipo de Documento</span>
-        <input type="text" class="form-control" placeholder="Tipo de Documento" [(ngModel)]="Student.documentTypeId"
-            name="type_document" />
+        <select class="form-select" id="tipoDocumento" [(ngModel)]="Student.documentTypeId" name="typeDocument" (ngModelChange)="onTypeDocumentChange()">
+            <option value="1">DNI</option>
+            <option value="2">CNE</option>
+        </select>
     </div>
 
     <!-- Number Document Field -->
@@ -46,15 +59,118 @@
         <label for="number_document"></label>
         <span class="input-group-text" id="basic-addon1">Número de Documento</span>
         <input type="text" class="form-control" placeholder="Número de Documento" [(ngModel)]="Student.numberDocument"
-            name="number_document" />
+            name="number_document" pattern="[0-9]*" />
+        <!-- Adición de un mensaje para indicar que solo se permiten números -->
+        <div *ngIf="Student.numberDocument && !isValidNumberDocument()" class="text-danger">
+            El número de documento solo debe contener números.
+        </div>
     </div>
 
+    <!-- Nivel Academico Field -->
+    <div class="form-group">
+        <label for="last_name"></label>
+        <span class="input-group-text" id="basic-addon1">Nivel Academico</span>
+        <select class="form-select" name="nivel" id="nivel" [(ngModel)]="Student.academicLevelId">
+            <option value="1">INICIAL</option>
+            <option value="2">PRIMARIA</option>
+            <option value="3">SECUNDARIA</option>
+        </select>
+    </div>
+
+
+
     <!-- Grade ID Field -->
-    <div class="mb-1 position-relative">
-        <label for="grade_id"></label>
-        <span class="input-group-text" id="basic-addon1">ID de Grado</span>
-        <input type="number" class="form-control" placeholder="ID de Grado" [(ngModel)]="Student.gradeId"
-            name="grade_id" />
+    <div class="form-group">
+        <label for="last_name"></label>
+        <span class="input-group-text" id="basic-addon1">Grado y Sección</span>
+        <select class="form-select" name="grado" id="grado" [(ngModel)]="Student.gradeId">
+            <option value="1">1 "A"</option>
+            <option value="2">1 "B"</option>
+            <option value="3">1 "C"</option>
+            <option value="4">1 "D"</option>
+            <option value="5">1 "E"</option>
+            <option value="6">2 "A"</option>
+            <option value="7">2 "B"</option>
+            <option value="8">2 "C"</option>
+            <option value="9">2 "D"</option>
+            <option value="10">2 "E"</option>
+            <option value="11">3 "A"</option>
+            <option value="12">3 "B"</option>
+            <option value="13">3 "C"</option>
+            <option value="14">3 "D"</option>
+            <option value="15">3 "E"</option>
+            <option value="16">4 "A"</option>
+            <option value="17">4 "B"</option>
+            <option value="18">4 "C"</option>
+            <option value="19">4 "D"</option>
+            <option value="20">4 "E"</option>
+            <option value="21">5 "A"</option>
+            <option value="22">5 "B"</option>
+            <option value="23">5 "C"</option>
+            <option value="24">5 "D"</option>
+            <option value="25">5 "E"</option>
+            <option value="26">6 "A"</option>
+            <option value="27">6 "B"</option>
+            <option value="28">6 "C"</option>
+            <option value="29">6 "D"</option>
+            <option value="30">6 "E"</option>
+        </select>
+    </div>
+
+
+
+    <div class="mb-3">
+        <label for="email_teacher"></label>
+        <span class="input-group-text" id="basic-addon1">Correo Electrónico</span>
+        <input type="email" class="form-control" placeholder="Correo Electrónico" aria-label="Correo Electrónico"
+            aria-describedby="basic-addon1" name="email_teacher" [(ngModel)]="Student.email" required
+            #emailInput="ngModel"
+            [ngClass]="{'is-invalid': emailInput.invalid && (emailInput.dirty || emailInput.touched), 'is-valid': emailInput.valid && emailInput.touched}"
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" />
+        <div class="text-danger" *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+            <div *ngIf="emailInput.hasError('required')">El correo electrónico es requerido.</div>
+            <div *ngIf="emailInput.hasError('email')">Ingrese un correo electrónico válido.</div>
+            <div *ngIf="emailInput.hasError('pattern')">Ingrese un correo electrónico con el formato correcto (por
+                ejemplo,
+                example@dominio.com).</div>
+        </div>
+        <div class="text-success" *ngIf="emailInput.valid && emailInput.touched">
+            Correcto
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="phone_number_teacher"></label>
+        <span class="input-group-text" id="basic-addon1">Número de Teléfono</span>
+        <input type="text" class="form-control" placeholder="Número de Teléfono" aria-label="Número de Teléfono"
+            aria-describedby="basic-addon1" name="phone_number_teacher" [(ngModel)]="Student.cellPhone" required
+            pattern="^9\d{8}$" #phoneInput="ngModel"
+            [ngClass]="{'is-invalid': phoneInput.invalid && (phoneInput.dirty || phoneInput.touched), 'is-valid': phoneInput.valid && phoneInput.touched}" />
+        <div class="text-danger" *ngIf="phoneInput.invalid && (phoneInput.dirty || phoneInput.touched)">
+            <div *ngIf="phoneInput.hasError('required')">El número de teléfono es requerido.</div>
+            <div *ngIf="phoneInput.hasError('pattern')">Ingrese un número de teléfono válido que comience con 9 y tenga
+                9
+                dígitos.</div>
+        </div>
+        <div class="text-success" *ngIf="phoneInput.valid && phoneInput.touched">
+            Correcto
+        </div>
+    </div>
+
+    <div class="mb-3 position-relative">
+        <span class="input-group-text" id="basic-addon1">Contraseña</span>
+        <input type="text" class="form-control" placeholder="Contraseña" aria-label="Password"
+            aria-describedby="basic-addon1" name="password" [(ngModel)]="Student.password" required pattern="^\S{8,25}$"
+            #passwordInput="ngModel"
+            [ngClass]="{'is-invalid': passwordInput.invalid && (passwordInput.dirty || passwordInput.touched), 'is-valid': passwordInput.valid && passwordInput.touched}" />
+        <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger">
+            <div *ngIf="studentForm.controls['password'].hasError('required')">La contraseña es requerida.</div>
+            <div *ngIf="studentForm.controls['password'].hasError('pattern')">La contraseña debe tener entre 8 y 25
+                caracteres y no contener espacios.</div>
+        </div>
+        <div *ngIf="passwordInput.valid && passwordInput.touched" class="text-success">
+            Contraseña válida.
+        </div>
     </div>
 
     <!-- Modal Footer with Save and Close Buttons -->

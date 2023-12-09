@@ -7,42 +7,75 @@
     <div class="col-md-9">
       <!-- Contenido principal -->
       <div class="card border-primary mb-3">
-        <div class="card-header">Student</div>
+        <div class="card-header">Estudiantes</div>
         <div class="card-body text-primary">
-          <h5 class="card-title">Listado de Student inactivos</h5>
-          <div class="my-5 text-left"></div>
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered w-100 small">
-              <thead>
-                <!-- Encabezados de la tabla -->
-                <tr class="table-primary">
-                  <th>ID</th>
-                  <th>Nombres</th>
-                  <th>Apellidos</th>
-                  <th>Tipo de documento</th>
-                  <th>Número de documento</th>
-                  <th>Nivel Académico</th>
-                  <th>Grado</th>
-                  <th>Email</th>
-                  <th>Contraseña</th>
-                  <th>Celular</th>
-                  <th>Acción</th>
-                  <th>Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of inactiveStudents">
-                  <td>{{ item.id }}</td>
-                  <td>{{ item.names }}</td>
-                  <td>{{ item.lastName }}</td>
-                  <td>{{ item.documentTypeId }}</td>
-                  <td>{{ item.numberDocument }}</td>
-                  <td>{{ item.academicLevelId }}</td>
-                  <td>{{ item.gradeId }}</td>
-                  <td>{{ item.email }}</td>
-                  <td>{{ item.cellPhone }}</td>
-                  <td>{{ item.password }}</td>
-                  <td>
+          <h5 class="card-title">Listado de estudiantes activos</h5>
+          <!-- Formulario de búsqueda -->
+          <div class="search-container text-center">
+            <form class="form-inline mb-3">
+              <div class="form-group mr-2">
+                <label for="searchName" class="sr-only">Nombre:</label>
+                <input type="text" class="form-control" id="searchName" name="searchName" placeholder="Nombre"
+                  [(ngModel)]="searchName" />
+              </div>
+              <div class="form-group mr-2">
+                <label for="searchLastName" class="sr-only">Apellido:</label>
+                <input type="text" class="form-control" id="searchLastName" name="searchLastName" placeholder="Apellido"
+                  [(ngModel)]="searchLastName" />
+              </div>
+              <!-- Número de Documento Field -->
+              <div class="form-group mr-2">
+                <label for="searchDocumentNumber" class="sr-only">Número de Documento:</label>
+                <input type="text" class="form-control" id="searchDocumentNumber" name="searchDocumentNumber"
+                  placeholder="Número de Documento" [(ngModel)]="searchDocumentNumber" />
+              </div>
+
+              <div class="form-group mr-2">
+                <label for="searchAcademicLevel" class="sr-only">Nivel Académico:</label>
+                <select class="form-control" id="searchAcademicLevel" name="searchAcademicLevel" [(ngModel)]="searchAcademicLevel">
+                  <option value="">Seleccione Nivel Académico</option>
+                  <option value="1">Inicial</option>
+                  <option value="2">Primaria</option>
+                  <option value="3">Secundaria</option>
+                </select>
+              </div>
+            
+
+              <button type="button" class="btn btn-primary" (click)="searchStudentInactive()">Buscar</button>
+              <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
+            </form>
+
+            <div class="my-5 text-left"></div>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered w-100 small">
+                <thead>
+                  <!-- Encabezados de la tabla -->
+                  <tr class="table-primary">
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Tipo de documento</th>
+                    <th>Número de documento</th>
+                    <th>Nivel Académico</th>
+                    <th>Grado</th>
+                    <th>Email</th>
+                    <th>Celular</th>
+                    <th>Contraseña</th>
+                    <th>Acción</th>
+                    <th>Eliminar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of inactiveStudents">
+                    <td>{{ item.names }}</td>
+                    <td>{{ item.lastName }}</td>
+                    <td>{{ convertDocumentType(item.documentTypeId) }}</td>
+                    <td>{{ item.numberDocument }}</td>
+                    <td>{{ convertAcademicDegree(item.academicLevelId) }}</td>
+                    <td>{{ convertGradeId(item.gradeId) }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.cellPhone }}</td>
+                    <td>{{ item.password }}</td>
+                    <td>
                     <button type="button" class="btn btn-success btn-sm"
                       (click)="restoreStudent(item)">Restaurar</button>
                   </td>

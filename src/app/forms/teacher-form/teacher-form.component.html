@@ -83,6 +83,9 @@
       </div>
     </div>
 
+  
+
+
     <div class="mb-3 position-relative">
       <label for="courseId_teacher"></label>
       <span class="input-group-text" id="basic-addon1">Especializacion</span>
@@ -116,22 +119,12 @@
 
 
     <div class="mb-3 position-relative">
-      <label for="documentTypeId_teacher"></label>
-      <span class="input-group-text" id="basic-addon1">Tipo de documento</span>
-      <select class="form-select" name="documentTypeId_teacher" [(ngModel)]="teacher.documentTypeId" required
-        #documentTypeIdInput="ngModel"
-        [ngClass]="{ 'is-invalid': documentTypeIdInput.invalid && (documentTypeIdInput.dirty || documentTypeIdInput.touched), 'is-valid': documentTypeIdInput.valid && documentTypeIdInput.touched }">
-        <option value="" disabled selected>Seleccione un tipo de documento</option>
-        <option value="1">DNI</option>
-        <option value="2">CNE</option>
-      </select>
-      <div class="text-danger"
-        *ngIf="documentTypeIdInput.invalid && (documentTypeIdInput.dirty || documentTypeIdInput.touched)">
-        <div *ngIf="documentTypeIdInput.hasError('required')">Seleccione un tipo de documento.</div>
-      </div>
-      <div class="text-success" *ngIf="documentTypeIdInput.valid && documentTypeIdInput.touched">
-        Correcto
-      </div>
+      <label for="last_name"></label>
+        <span class="input-group-text" id="basic-addon1">Tipo de Documento</span>
+        <select class="form-select" id="tipoDocumento" [(ngModel)]="teacher.documentTypeId" name="typeDocument" (ngModelChange)="onTypeDocumentChange()">
+            <option value="1">DNI</option>
+            <option value="2">CNE</option>
+        </select>
     </div>
 
     <div class="mb-3">

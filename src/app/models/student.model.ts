@@ -3,11 +3,11 @@ export class Student {
   state: string = '';
   names: string = '';
   lastName: string = '';
-  documentTypeId: number = 0; // Aquí podrías usar un tipo de datos más específico si lo requieres
+  documentTypeId: number = 0; 
   numberDocument: string = '';
-  academicLevelId: number = 0; // Puedes ajustar el tipo de dato según corresponda
+  academicLevelId: number = 0; 
   gradeId: number = 0;
-  email: string = ''; // Asegúrate de usar un tipo de datos para el email
+  email: string = '';
   password: string = '';
-  cellPhone: number = 0; // Puedes ajustar el tipo de datos si lo necesitas
+  cellPhone: number = 0; 
 }

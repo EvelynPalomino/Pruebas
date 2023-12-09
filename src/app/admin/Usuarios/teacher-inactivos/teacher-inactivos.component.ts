@@ -15,6 +15,61 @@ export class TeacherInactivosComponent implements OnInit {
 
   constructor(private teacherService: TeacherServices, private http: HttpClient) {}
 
+  convertDocumentType(type: number | string): string {
+    // Si el tipo es un número, convertirlo a cadena
+    if (typeof type === 'number') {
+      type = type.toString();
+    }
+
+    switch (type) {
+      case '1':
+        return 'DNI';
+      case '2':
+        return 'CNE';
+      default:
+        return 'Desconocido';
+    }
+  }
+  convertCourse(courseId: number | string): string {
+    if (typeof courseId === 'number') {
+      courseId = courseId.toString();
+    }
+
+    switch (courseId) {
+      case '1':
+      return 'Matematica';
+    case '2':
+      return 'Ciencia';
+    case '3':
+      return 'English';
+    case '4':
+      return 'Historia';
+    case '5':
+      return 'Personal Social';
+    case '6':
+      return 'Arte';
+    case '7':
+      return 'Biologia';
+    case '8':
+      return 'Geografia';
+    case '9':
+      return 'Computación';
+    case '10':
+      return 'Literatura';
+    case '11':
+      return 'Arte';
+    case '12':
+      return 'Ciencia y Tecnologia';
+    case '13':
+      return 'Religión';
+    case '14':
+      return 'Comunicación';
+    case '15':
+      return 'Comprensión Lectora';
+      default:
+        return 'Desconocido';
+    }
+  }
   ngOnInit() {
     this.teacherService.getInactiveTeachers().subscribe(
       teachers => this.inactiveTeachers = teachers

@@ -47,19 +47,27 @@
           <div class="form-group mr-2">
             <label for="searchSpecialty" class="sr-only">Especialidad:</label>
             <label class="position-relative">
-                <select class="form-control" id="searchSpecialty" name="searchSpecialty" [(ngModel)]="searchSpecialty">
-                    <option value="" disabled selected>Selecciona una especialidad</option>
-                    <option value="1">Matemática</option>
-                    <option value="Comunicacion">Comunicación</option>
-                    <option value="Quimica">Química</option>
-                    <option value="Arte">Arte</option>
-                    <option value="Personal Social">Personal Social</option>
-                    <option value="Educacion Fisica">Educación Física</option>
-                    <option value="Historia">Historia</option>
-                </select>
+              <select class="form-control" id="searchSpecialty" name="searchSpecialty" [(ngModel)]="searchSpecialty">
+                <option value="" disabled selected>Selecciona una especialidad</option>
+                <option value="1">Matematica</option>
+                <option value="2">Ciencia</option>
+                <option value="3">English</option>
+                <option value="4">Historia</option>
+                <option value="5">Personal Social</option>
+                <option value="6">Arte</option>
+                <option value="7">Biologia</option>
+                <option value="8">Geografia</option>
+                <option value="9">Computación</option>
+                <option value="10">Literatura</option>
+                <option value="11">Arte</option>
+                <option value="12">Ciencia y Tecnologia</option>
+                <option value="13">Religión</option>
+                <option value="14">Comunicación</option>
+                <option value="15">Comprensión Lectora</option>
+              </select>
             </label>
-        </div>
-          <!-- <button type="button" class="btn btn-primary" (click)="searchTeachers()">Buscar</button> -->
+          </div>
+          <button type="button" class="btn btn-primary" (click)="searchTeachers()">Buscar</button>
           <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
         </form>
 
@@ -67,15 +75,15 @@
           <button type="button" class="btn btn btn-custom mr-2" (click)="exportToExcel()">
             <i class="fas fa-file-excel"></i> Exportar a Excel
           </button>
-        
+
           <button type="button" class="btn btn btn-custom mr-2" (click)="exportToCSV()">
             <i class="fas fa-file-csv"></i> Exportar a CSV
           </button>
-            <button type="button" class="btn btn  btn-custom" (click)="exportToPDF()">
-              <i class="fas fa-file-pdf"></i> Exportar a PDF 
-            </button>
-          </div>  
-        
+          <button type="button" class="btn btn  btn-custom" (click)="exportToPDF()">
+            <i class="fas fa-file-pdf"></i> Exportar a PDF
+          </button>
+        </div>
+
 
         <!-- <button class="pdf" (click)="exportToPDF()">Exportar a PDF</button> -->
 
@@ -113,8 +121,8 @@
               <td>{{ teacher.nameTeacher }}</td>
               <td>{{ teacher.lastNameTeacher }}</td>
               <td>{{ teacher.salary }}</td>
-              <td>{{ teacher.courseId }}</td>
-              <td>{{ teacher.documentTypeId }}</td>
+              <td>{{ convertCourse(teacher.courseId) }}</td>
+              <td>{{ convertDocumentType(teacher.documentTypeId) }}</td>
               <td>{{ teacher.documentNumber }}</td>
               <td>{{ teacher.email }}</td>
               <td>{{ teacher.phoneNumber }}</td>
