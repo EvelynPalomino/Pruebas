@@ -34,7 +34,7 @@ export class StudentComponent implements OnInit {
   searchName: string = '';
   searchLastName: string = '';
   searchDocumentNumber: string = '';
-  searchAcademicLevel : string = '';
+  searchAcademicLevel: string = '';
   searchDocumentType: string = '';
   searchSpecialty: string = '';
 
@@ -50,8 +50,9 @@ export class StudentComponent implements OnInit {
               student.names.toLowerCase().includes(this.searchName.toLowerCase())) &&
             (this.searchLastName === '' ||
               student.lastName.toLowerCase().includes(this.searchLastName.toLowerCase())) &&
-            (this.searchDocumentNumber === '' ||
-              student.numberDocument.includes(this.searchDocumentNumber)) &&
+            (this.searchDocumentType === '' || student.documentTypeId.toString() === this.searchDocumentType)&&
+              (this.searchDocumentNumber === '' ||
+                student.numberDocument.includes(this.searchDocumentNumber)) &&
             (this.searchAcademicLevel === '' || student.academicLevelId.toString() === this.searchAcademicLevel)
         );
 

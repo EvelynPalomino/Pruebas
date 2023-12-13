@@ -10,7 +10,8 @@ import { TeacherInactivosComponent } from './admin/Usuarios/teacher-inactivos/te
 import { TeacherEditComponent } from './forms/teacher-edit/teacher-edit.component';
 import { StudentInactivosComponent } from './admin/Usuarios/student-inactivos/student-inactivos.component';
 import { StudentComponent } from './admin/Usuarios/student/student.component';
-import { CourseComponent } from './admin/Usuarios/course/course.component';
+import { NoteComponent } from './admin/Usuarios/note/note.component';
+
 
 const routes: Routes = [
 
@@ -50,8 +51,8 @@ const routes: Routes = [
     component: StudentComponent,
   }, 
   {
-    path: 'Course-a',
-    component: CourseComponent,
+    path: 'Note',
+    component: NoteComponent,
   }, 
   {
   path: 'Edit',

@@ -23,12 +23,23 @@
                 <input type="text" class="form-control" id="searchLastName" name="searchLastName" placeholder="Apellido"
                   [(ngModel)]="searchLastName" />
               </div>
+
+              <div class="form-group mr-2">
+                <label for="searchDocumentType" class="sr-only">Tipo de Documento:</label>
+                <select class="form-control" id="searchDocumentType" name="searchDocumentType" [(ngModel)]="searchDocumentType">
+                  <option value="">Seleccione Tipo de Documento</option>
+                  <option value="1">DNI</option>
+                  <option value="2">CNE</option>
+                </select>
+              </div>
+
               <!-- Número de Documento Field -->
               <div class="form-group mr-2">
                 <label for="searchDocumentNumber" class="sr-only">Número de Documento:</label>
                 <input type="text" class="form-control" id="searchDocumentNumber" name="searchDocumentNumber"
                   placeholder="Número de Documento" [(ngModel)]="searchDocumentNumber" />
               </div>
+
 
               <div class="form-group mr-2">
                 <label for="searchAcademicLevel" class="sr-only">Nivel Académico:</label>

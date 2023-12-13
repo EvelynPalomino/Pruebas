@@ -8,41 +8,44 @@
 <!-- Student Form -->
 <form (ngSubmit)="create()" #studentForm="ngForm">
     <!-- Nombre Field -->
-    <div class="mb-1 position-relative">
-        <label for="name"></label>
-        <span class="input-group-text" id="basic-addon1">Nombre</span>
-        <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names" required
-            pattern="^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]*[A-ZÁÉÍÓÚÑ]$" #namesInput="ngModel"
-            [ngClass]="{'is-invalid': namesInput.invalid && (namesInput.dirty || namesInput.touched), 'is-valid': namesInput.valid && namesInput.touched}" />
-        <div *ngIf="namesInput.invalid && (namesInput.dirty || namesInput.touched)" class="text-danger">
-            <div
-                *ngIf="studentForm.controls['names'].hasError('required') || studentForm.controls['names'].hasError('pattern')">
-                El nombre es requerido y debe ser en mayusculas, comenzar y terminar con una letra y puede contener letras y espacios.
-            </div>
-        </div>
-        <div *ngIf="namesInput.valid && namesInput.touched" class="text-success">
-            Nombre válido.
+   <!-- Nombre Field -->
+<div class="mb-1 position-relative">
+    <label for="name"></label>
+    <span class="input-group-text" id="basic-addon1">Nombre</span>
+    <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names" required
+        pattern="^[A-ZÁÉÍÓÚÑ\s]+$" #namesInput="ngModel"
+        [ngClass]="{'is-invalid': namesInput.invalid && (namesInput.dirty || namesInput.touched), 'is-valid': namesInput.valid && namesInput.touched}" />
+    <div *ngIf="namesInput.invalid && (namesInput.dirty || namesInput.touched)" class="text-danger">
+        <div
+            *ngIf="studentForm.controls['names'].hasError('required') || studentForm.controls['names'].hasError('pattern')">
+            El nombre es requerido y debe estar en mayúsculas, comenzar y terminar con una letra y puede contener letras y espacios.
         </div>
     </div>
+    <div *ngIf="namesInput.valid && namesInput.touched" class="text-success">
+        Nombre válido.
+    </div>
+</div>
 
-    <!-- Apellido Field -->
-    <div class="mb-3 position-relative">
-        <label for="last_nameteacher"></label>
-        <span class="input-group-text" id="basic-addon1">Apellido</span>
-        <input type="text" class="form-control" placeholder="Apellido" aria-label="Username"
-          aria-describedby="basic-addon1" name="last_nameteacher" [(ngModel)]="Student.lastName" required
-          pattern="^[A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑ ]*[A-ZÁÉÍÓÚÑ]$" #lastNameInput="ngModel"
-          [ngClass]="{'is-invalid': lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched), 'is-valid': lastNameInput.valid && lastNameInput.touched}" />
-        <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="text-danger">
-          <br>
-          <div *ngIf="studentForm.controls['last_nameteacher'].hasError('required')">El apellido es requerido.</div>
-          <div *ngIf="studentForm.controls['last_nameteacher'].hasError('pattern')">El apellido debe comenzar y terminar
-            con una letra y puede contener letras y espacios.</div>
+<!-- Apellido Field -->
+<div class="mb-3 position-relative">
+    <label for="last_nameteacher"></label>
+    <span class="input-group-text" id="basic-addon1">Apellido</span>
+    <input type="text" class="form-control" placeholder="Apellido" aria-label="Username"
+        aria-describedby="basic-addon1" name="last_nameteacher" [(ngModel)]="Student.lastName" required
+        pattern="^[A-ZÁÉÍÓÚÑ\s]+$" #lastNameInput="ngModel"
+        [ngClass]="{'is-invalid': lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched), 'is-valid': lastNameInput.valid && lastNameInput.touched}" />
+    <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="text-danger">
+        <br>
+        <div *ngIf="studentForm.controls['last_nameteacher'].hasError('required')">El apellido es requerido.</div>
+        <div *ngIf="studentForm.controls['last_nameteacher'].hasError('pattern')">El apellido debe comenzar y terminar
+            con una letra y puede contener letras y espacios.
         </div>
-        <div *ngIf="lastNameInput.valid && lastNameInput.touched" class="text-success">
-          Apellido válido.
-        </div>
-      </div>
+    </div>
+    <div *ngIf="lastNameInput.valid && lastNameInput.touched" class="text-success">
+        Apellido válido.
+    </div>
+</div>
+
 
     <!-- Type Document Field -->
     <div class="form-group">
@@ -55,16 +58,24 @@
     </div>
 
     <!-- Number Document Field -->
-    <div class="mb-1 position-relative">
-        <label for="number_document"></label>
-        <span class="input-group-text" id="basic-addon1">Número de Documento</span>
-        <input type="text" class="form-control" placeholder="Número de Documento" [(ngModel)]="Student.numberDocument"
-            name="number_document" pattern="[0-9]*" />
-        <!-- Adición de un mensaje para indicar que solo se permiten números -->
-        <div *ngIf="Student.numberDocument && !isValidNumberDocument()" class="text-danger">
-            El número de documento solo debe contener números.
+    <div class="form-group">
+        <label for="numeroDocumento">Número de Documento:</label>
+        <input class="form-control" type="text" id="numeroDocumento" [(ngModel)]="Student.numberDocument"
+            name="numeroDocumento" pattern="[0-9]+" required
+            (input)="validateDocumentLength(); validateNumericCharacters()" title="Por favor, ingrese un número de documento válido">
+        <div *ngIf="documentError" class="alert alert-danger">
+            <div *ngIf="Student.documentTypeId === 1 && Student.numberDocument.length !== 8">
+                El número de documento debe contener 8 dígitos para el tipo 1 (DNI).
+            </div>
+            <div *ngIf="Student.documentTypeId === 2 && Student.numberDocument.length !== 12">
+                El número de documento debe contener 12 dígitos para el tipo 2 (CNE).
+            </div>
+            <div *ngIf="nonNumericCharacters" class="text-danger">
+                El número de documento solo puede contener números.
+            </div>
         </div>
     </div>
+    
 
     <!-- Nivel Academico Field -->
     <div class="form-group">

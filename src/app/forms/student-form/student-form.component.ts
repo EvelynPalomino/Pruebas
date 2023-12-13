@@ -1,5 +1,5 @@
-import { Student } from './../../models/student.model';
 import { Component, OnInit } from '@angular/core';
+import { Student } from './../../models/student.model';
 import { StudentService } from '../../services/student.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,93 +12,38 @@ import { Location } from '@angular/common';
   styleUrls: ['./student-form.component.css']
 })
 export class StudentFormComponent implements OnInit {
-  isAgeValid() {
-    throw new Error('Method not implemented.');
-  }
-  calculateAge(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
+  // Declaración de variables
   documentError: boolean = false;
   documentErrorMessage: string = '';
-
   Student: Student = new Student();
-  StudentForm: any;
-  formBuilder: any;
-  selectedDocumentType: string = 'DNI';
-
-  invalidDateFormat: boolean = false;
-  invalidAge: boolean = false;
-
-
 
   constructor(
-    public StudentService: StudentService,
+    public studentService: StudentService,
     public activateRoute: ActivatedRoute,
     public router: Router,
     private location: Location,
-    private modalService: NgbModal  // Inyecta NgbModal en el constructor
+    private modalService: NgbModal
   ) { }
 
-  onTypeDocumentChange() {
-    this.validateDocument();
-  }
-
-  validateDocument() {
-    const documentTypeId = this.Student.documentTypeId;
-    const documentValue = this.Student.numberDocument;
-
-
-    if (documentTypeId === 2) {
-      console.log(documentTypeId);
-      this.documentError = documentValue.length !== 12 || !/^\d{10}$/.test(documentValue);
-      this.documentErrorMessage = 'El número de documento debe tener 10 dígitos.';
-    } else if (documentTypeId === 1) {
-      console.log(documentTypeId);
-      this.documentError = documentValue.length !== 8 || !/^\d{8}$/.test(documentValue);
-      this.documentErrorMessage = 'El número de documento debe tener 8 dígitos.';
-    } else {
-      // Puedes agregar lógica para otros tipos de documentos si es necesario
-      this.documentError = false;
-      this.documentErrorMessage = '';
-    }
-  }
-
-
-
-  isValidDocumentLength: boolean = true;
-
-  validateDocumentLength() {
-    if ((this.Student.documentTypeId === 1 && this.Student.numberDocument.length === 8) ||
-      (this.Student.documentTypeId === 2 && this.Student.numberDocument.length === 12)) {
-      this.isValidDocumentLength = true;
-    } else {
-      this.isValidDocumentLength = false;
-    }
-  }
-
-  isValidNumberDocument() {
-    return /^\d+$/.test(this.Student.numberDocument);
-  }
-
-  
-
   ngOnInit() {
-    this.cargarStudent();
+    this.loadStudent();
   }
 
-  cargarStudent(): void {
+  loadStudent(): void {
     this.activateRoute.params.subscribe(params => {
       let id = params['id'];
       if (id) {
-        this.StudentService.getStudent(id).subscribe((Student) => this.StudentForm = Student);
+        this.studentService.getStudent(id).subscribe((student) => this.Student = student);
       }
     });
   }
 
   create(): void {
+    // Aquí puedes validar antes de crear el estudiante
+    // Por ejemplo, si la longitud del documento es correcta, etc.
     this.Student.state = 'A';
 
-    this.StudentService.create(this.Student).subscribe(
+    this.studentService.create(this.Student).subscribe(
       createdStudent => {
         Swal.fire({
           title: 'Operacion Exitosa',
@@ -112,22 +57,92 @@ export class StudentFormComponent implements OnInit {
         });
       },
       error => {
-        // Muestra mensaje de error si hay un problema
+        // Manejo de errores
       }
     );
   }
 
-
   update(): void {
-    this.StudentService.update(this.StudentForm).subscribe(Student => {
+    this.studentService.update(this.Student).subscribe(() => {
       this.router.navigate(['/Student-a']);
     });
   }
 
-
-  // Agrega este método para cerrar el modal usando NgbModal
   closeModal(): void {
-    // Puedes cerrar el modal usando el servicio NgbModal
     this.modalService.dismissAll();
+  }
+
+  // Método para obtener el patrón del documento
+  getDocumentPattern(): string {
+    const documentType = this.Student.documentTypeId;
+
+    switch (documentType) {
+      case 1:
+        return '\\d{8}'; // 8 dígitos para el tipo 1 (ejemplo: DNI)
+      case 2:
+        return '\\d{12}'; // 12 dígitos para el tipo 2 (ejemplo: CNE)
+      default:
+        return ''; // Puedes ajustar este retorno si hay más tipos de documentos
+    }
+  }
+
+  validateNumericCharacters() {
+    const numericRegex = /^[0-9]+$/;
+    this.nonNumericCharacters = !numericRegex.test(this.Student.numberDocument);
+}
+
+nonNumericCharacters: boolean = false;
+
+
+
+  // Método para limpiar errores del documento
+  clearDocumentError() {
+    this.documentError = false;
+    this.documentErrorMessage = '';
+  }
+
+  onTypeDocumentChange() {
+    this.validateDocumentLength();
+    this.clearDocumentError(); // Limpia el error al cambiar el tipo de documento
+  }
+  validateDocument() {
+    const documentTypeId = this.Student.documentTypeId;
+    const documentValue = this.Student.numberDocument;
+  
+    if (documentTypeId === 2) {
+      this.documentError = documentValue.length !== 12 || !/^\d{12}$/.test(documentValue);
+      this.documentErrorMessage = 'El número de documento debe tener 12 dígitos para el tipo 2 (CNE).';
+    } else if (documentTypeId === 1) {
+      this.documentError = documentValue.length !== 8 || !/^\d{8}$/.test(documentValue);
+      this.documentErrorMessage = 'El número de documento debe tener 8 dígitos para el tipo 1 (DNI).';
+    } else {
+      // Puedes agregar lógica para otros tipos de documentos si es necesario
+      this.documentError = false;
+      this.documentErrorMessage = '';
+    }
+  }
+  
+  
+  
+
+  // Método para validar la longitud del documento
+  validateDocumentLength() {
+    this.documentError = false; // Reinicia la bandera de error
+  
+    if (
+      (this.Student.documentTypeId === 1 && this.Student.numberDocument.length !== 8) ||
+      (this.Student.documentTypeId === 2 && this.Student.numberDocument.length !== 12)
+    ) {
+      this.documentError = true; // Activa el error si la longitud no coincide con el tipo de documento
+    }
+  }
+  
+  
+  // Método para comprobar si se excede la longitud permitida del documento
+  exceedsDocumentLength(): boolean {
+    return this.documentError && (
+      (this.Student.documentTypeId === 1 && this.Student.numberDocument.length > 8) ||
+      (this.Student.documentTypeId === 2 && this.Student.numberDocument.length > 12)
+    );
   }
 }

@@ -22,6 +22,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { StudentComponent } from './admin/Usuarios/student/student.component';
 import { StudentInactivosComponent } from './admin/Usuarios/student-inactivos/student-inactivos.component';
 import { StudentFormComponent } from './forms/student-form/student-form.component';
+import { NoteComponent } from './admin/Usuarios/note/note.component';
+import { NoteFormComponent } from './forms/note-form/note-form.component';
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import { StudentFormComponent } from './forms/student-form/student-form.componen
     StudentComponent,
     StudentInactivosComponent,
     StudentFormComponent,
+    NoteComponent,
+    NoteFormComponent,
   ],
   imports: [
     BrowserModule,
