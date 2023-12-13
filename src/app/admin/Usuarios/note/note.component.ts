@@ -36,4 +36,9 @@ export class NoteComponent {
   closeCreatedModal() {
     this.showForm = false;
   }
+
+
+
+
+  
 }

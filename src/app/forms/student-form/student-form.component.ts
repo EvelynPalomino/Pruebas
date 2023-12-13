@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-student-form',
@@ -16,13 +18,16 @@ export class StudentFormComponent implements OnInit {
   documentError: boolean = false;
   documentErrorMessage: string = '';
   Student: Student = new Student();
+  userForm: any;
+  numberDocument: any;
 
   constructor(
     public studentService: StudentService,
     public activateRoute: ActivatedRoute,
     public router: Router,
     private location: Location,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -41,20 +46,30 @@ export class StudentFormComponent implements OnInit {
   create(): void {
     // Aquí puedes validar antes de crear el estudiante
     // Por ejemplo, si la longitud del documento es correcta, etc.
+    
     this.Student.state = 'A';
 
     this.studentService.create(this.Student).subscribe(
       createdStudent => {
-        Swal.fire({
-          title: 'Operacion Exitosa',
-          text: `Usuario ${createdStudent.names} !`,
-          icon: 'success',
-          showCancelButton: false,
-          confirmButtonText: 'Ok'
-        }).then(() => {
-          this.router.navigate(['/Student-a']);
-          window.location.reload();
-        });
+
+        const insercionIncorrecta = false;
+        
+        if (insercionIncorrecta) {
+          // Mostrar mensaje de error si la inserción es incorrecta
+          this.toastr.error('No se puede insertar el registro. Motivo: [razón del error]', 'Error');
+        } else {
+
+          Swal.fire({
+            title: 'Operacion Exitosa',
+            text: `Usuario ${createdStudent.names} !`,
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: 'Ok'
+          }).then(() => {
+            this.router.navigate(['/Student-a']);
+            window.location.reload();
+          });
+        }
       },
       error => {
         // Manejo de errores
@@ -89,9 +104,9 @@ export class StudentFormComponent implements OnInit {
   validateNumericCharacters() {
     const numericRegex = /^[0-9]+$/;
     this.nonNumericCharacters = !numericRegex.test(this.Student.numberDocument);
-}
+  }
 
-nonNumericCharacters: boolean = false;
+  nonNumericCharacters: boolean = false;
 
 
 
@@ -108,7 +123,7 @@ nonNumericCharacters: boolean = false;
   validateDocument() {
     const documentTypeId = this.Student.documentTypeId;
     const documentValue = this.Student.numberDocument;
-  
+
     if (documentTypeId === 2) {
       this.documentError = documentValue.length !== 12 || !/^\d{12}$/.test(documentValue);
       this.documentErrorMessage = 'El número de documento debe tener 12 dígitos para el tipo 2 (CNE).';
@@ -121,14 +136,14 @@ nonNumericCharacters: boolean = false;
       this.documentErrorMessage = '';
     }
   }
-  
-  
-  
+
+
+
 
   // Método para validar la longitud del documento
   validateDocumentLength() {
     this.documentError = false; // Reinicia la bandera de error
-  
+
     if (
       (this.Student.documentTypeId === 1 && this.Student.numberDocument.length !== 8) ||
       (this.Student.documentTypeId === 2 && this.Student.numberDocument.length !== 12)
@@ -136,8 +151,8 @@ nonNumericCharacters: boolean = false;
       this.documentError = true; // Activa el error si la longitud no coincide con el tipo de documento
     }
   }
-  
-  
+
+
   // Método para comprobar si se excede la longitud permitida del documento
   exceedsDocumentLength(): boolean {
     return this.documentError && (
@@ -145,4 +160,32 @@ nonNumericCharacters: boolean = false;
       (this.Student.documentTypeId === 2 && this.Student.numberDocument.length > 12)
     );
   }
+
+  
+  selectionChanged(event: any) {
+    const value = event.target.value;
+    console.log('Valor seleccionado: ', value);
+    
+    this.userForm.controls['numberDocument'].clearValidators();
+
+    if (value === 'DNI') {      
+      this.userForm.controls['numberDocument'].setValidators([
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(8)
+      ]);
+    }
+
+    if (value === 'CE') {
+      this.userForm.controls['numberDocument'].setValidators([
+        Validators.required,
+        Validators.minLength(12),
+        Validators.maxLength(12)
+      ]);
+    }
+
+    this.numberDocument.updateValueAndValidity();
+  }
+
+  
 }

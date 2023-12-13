@@ -50,9 +50,9 @@ export class StudentComponent implements OnInit {
               student.names.toLowerCase().includes(this.searchName.toLowerCase())) &&
             (this.searchLastName === '' ||
               student.lastName.toLowerCase().includes(this.searchLastName.toLowerCase())) &&
-            (this.searchDocumentType === '' || student.documentTypeId.toString() === this.searchDocumentType)&&
-              (this.searchDocumentNumber === '' ||
-                student.numberDocument.includes(this.searchDocumentNumber)) &&
+            (this.searchDocumentType === '' || student.documentTypeId.toString() === this.searchDocumentType) &&
+            (this.searchDocumentNumber === '' ||
+              student.numberDocument.includes(this.searchDocumentNumber)) &&
             (this.searchAcademicLevel === '' || student.academicLevelId.toString() === this.searchAcademicLevel)
         );
 
@@ -277,5 +277,57 @@ export class StudentComponent implements OnInit {
       }
     });
   }
+
+  exportToCSV() {
+    // Realizar una solicitud HTTP GET para obtener los datos desde tu API de estudiantes
+    fetch('http://localhost:8085/app/v1/students')
+      .then(response => response.json())
+      .then(data => {
+        // Convertir los datos a formato CSV
+        const csvData = this.convertToCSV(data);
+
+        // Crear un elemento <a> para descargar el archivo CSV
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Student.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => console.error('Error al obtener datos:', error));
+  }
+
+  convertToCSV(data: any[]) {
+    const header = Object.keys(data[0]).join(',');
+    const rows = data.map(item => Object.values(item).join(','));
+    return `${header}\n${rows.join('\n')}`;
+  }
+
+  exportToExcel() {
+    // Realizar una solicitud HTTP GET para obtener los datos desde tu API de estudiantes
+    this.http.get<any[]>('http://localhost:8085/app/v1/students')
+      .subscribe((data: any[]) => {
+        // Convertir los datos a un libro de Excel
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Exported Data');
+
+        // Crear un archivo array y descargarlo
+        const arrayBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([arrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Student.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      });
+  }
+
 
 }

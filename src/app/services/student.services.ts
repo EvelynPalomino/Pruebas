@@ -13,6 +13,11 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
+  checkIfExists(cellPhone: string, email: string): Observable<any> {
+    return this.http.post<any>(`${this.urlNotesedu}/checkIfExists`, { cellPhone, email });
+  }
+  
+
   getStudents(): Observable<Student[]> {
     return this.http.get<Student[]>(this.urlNotesedu);
   }

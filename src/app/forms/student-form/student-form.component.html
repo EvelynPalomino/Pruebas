@@ -8,61 +8,74 @@
 <!-- Student Form -->
 <form (ngSubmit)="create()" #studentForm="ngForm">
     <!-- Nombre Field -->
-   <!-- Nombre Field -->
-<div class="mb-1 position-relative">
-    <label for="name"></label>
-    <span class="input-group-text" id="basic-addon1">Nombre</span>
-    <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names" required
-        pattern="^[A-ZÁÉÍÓÚÑ\s]+$" #namesInput="ngModel"
-        [ngClass]="{'is-invalid': namesInput.invalid && (namesInput.dirty || namesInput.touched), 'is-valid': namesInput.valid && namesInput.touched}" />
-    <div *ngIf="namesInput.invalid && (namesInput.dirty || namesInput.touched)" class="text-danger">
-        <div
-            *ngIf="studentForm.controls['names'].hasError('required') || studentForm.controls['names'].hasError('pattern')">
-            El nombre es requerido y debe estar en mayúsculas, comenzar y terminar con una letra y puede contener letras y espacios.
+    <!-- Nombre Field -->
+    <div class="mb-1 position-relative">
+        <label for="name"></label>
+        <span class="input-group-text" id="basic-addon1">Nombre</span>
+        <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="Student.names" name="names" required
+            pattern="^[A-ZÁÉÍÓÚÑ\s]+$" #namesInput="ngModel"
+            [ngClass]="{'is-invalid': namesInput.invalid && (namesInput.dirty || namesInput.touched), 'is-valid': namesInput.valid && namesInput.touched}" />
+        <div *ngIf="namesInput.invalid && (namesInput.dirty || namesInput.touched)" class="text-danger">
+            <div
+                *ngIf="studentForm.controls['names'].hasError('required') || studentForm.controls['names'].hasError('pattern')">
+                El nombre es requerido y debe estar en mayúsculas, comenzar y terminar con una letra y puede contener
+                letras y espacios.
+            </div>
+        </div>
+        <div *ngIf="namesInput.valid && namesInput.touched" class="text-success">
+            Nombre válido.
         </div>
     </div>
-    <div *ngIf="namesInput.valid && namesInput.touched" class="text-success">
-        Nombre válido.
-    </div>
-</div>
 
-<!-- Apellido Field -->
-<div class="mb-3 position-relative">
-    <label for="last_nameteacher"></label>
-    <span class="input-group-text" id="basic-addon1">Apellido</span>
-    <input type="text" class="form-control" placeholder="Apellido" aria-label="Username"
-        aria-describedby="basic-addon1" name="last_nameteacher" [(ngModel)]="Student.lastName" required
-        pattern="^[A-ZÁÉÍÓÚÑ\s]+$" #lastNameInput="ngModel"
-        [ngClass]="{'is-invalid': lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched), 'is-valid': lastNameInput.valid && lastNameInput.touched}" />
-    <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="text-danger">
-        <br>
-        <div *ngIf="studentForm.controls['last_nameteacher'].hasError('required')">El apellido es requerido.</div>
-        <div *ngIf="studentForm.controls['last_nameteacher'].hasError('pattern')">El apellido debe comenzar y terminar
-            con una letra y puede contener letras y espacios.
+    <!-- Apellido Field -->
+    <div class="mb-3 position-relative">
+        <label for="last_nameteacher"></label>
+        <span class="input-group-text" id="basic-addon1">Apellido</span>
+        <input type="text" class="form-control" placeholder="Apellido" aria-label="Username"
+            aria-describedby="basic-addon1" name="last_nameteacher" [(ngModel)]="Student.lastName" required
+            pattern="^[A-ZÁÉÍÓÚÑ\s]+$" #lastNameInput="ngModel"
+            [ngClass]="{'is-invalid': lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched), 'is-valid': lastNameInput.valid && lastNameInput.touched}" />
+        <div *ngIf="lastNameInput.invalid && (lastNameInput.dirty || lastNameInput.touched)" class="text-danger">
+            <br>
+            <div *ngIf="studentForm.controls['last_nameteacher'].hasError('required')">El apellido es requerido.</div>
+            <div *ngIf="studentForm.controls['last_nameteacher'].hasError('pattern')">El apellido debe comenzar y
+                terminar
+                con una letra y puede contener letras y espacios.
+            </div>
+        </div>
+        <div *ngIf="lastNameInput.valid && lastNameInput.touched" class="text-success">
+            Apellido válido.
         </div>
     </div>
-    <div *ngIf="lastNameInput.valid && lastNameInput.touched" class="text-success">
-        Apellido válido.
-    </div>
-</div>
 
 
     <!-- Type Document Field -->
+    <!-- Tipo de Documento Field -->
     <div class="form-group">
         <label for="last_name"></label>
         <span class="input-group-text" id="basic-addon1">Tipo de Documento</span>
-        <select class="form-select" id="tipoDocumento" [(ngModel)]="Student.documentTypeId" name="typeDocument" (ngModelChange)="onTypeDocumentChange()">
+        <select class="form-select" id="tipoDocumento" [(ngModel)]="Student.documentTypeId" name="typeDocument"
+            #documentType="ngModel"
+            [ngClass]="{'is-valid': documentType.valid && documentType.touched, 'is-invalid': documentType.invalid && documentType.touched}"
+            (ngModelChange)="onTypeDocumentChange()">
+            <option value="" disabled [selected]="true">Seleccione Tipo de Documento</option>
             <option value="1">DNI</option>
             <option value="2">CNE</option>
         </select>
-    </div>
+        <div class="invalid-feedback" *ngIf="documentType.invalid && documentType.touched">
+            Por favor, seleccione un tipo de documento.
+        </div>
+    </div>numberDocument
+
 
     <!-- Number Document Field -->
     <div class="form-group">
-        <label for="numeroDocumento">Número de Documento:</label>
+        <label for="last_name"></label>
+        <span class="input-group-text" id="basic-addon1">Numero de Documento</span>
         <input class="form-control" type="text" id="numeroDocumento" [(ngModel)]="Student.numberDocument"
             name="numeroDocumento" pattern="[0-9]+" required
-            (input)="validateDocumentLength(); validateNumericCharacters()" title="Por favor, ingrese un número de documento válido">
+            (input)="validateDocumentLength(); validateNumericCharacters()"
+            title="Por favor, ingrese un número de documento válido">
         <div *ngIf="documentError" class="alert alert-danger">
             <div *ngIf="Student.documentTypeId === 1 && Student.numberDocument.length !== 8">
                 El número de documento debe contener 8 dígitos para el tipo 1 (DNI).
@@ -75,17 +88,23 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Nivel Academico Field -->
     <div class="form-group">
         <label for="last_name"></label>
         <span class="input-group-text" id="basic-addon1">Nivel Academico</span>
-        <select class="form-select" name="nivel" id="nivel" [(ngModel)]="Student.academicLevelId">
+        <select class="form-select" name="nivel" id="nivel" [(ngModel)]="Student.academicLevelId"
+            #academicLevelId="ngModel"
+            [ngClass]="{'is-valid': academicLevelId.valid && academicLevelId.touched, 'is-invalid': academicLevelId.invalid && academicLevelId.touched}">
+            <option value="" disabled [selected]="true">Seleccione Nivel Académico</option>
             <option value="1">INICIAL</option>
             <option value="2">PRIMARIA</option>
             <option value="3">SECUNDARIA</option>
         </select>
+        <div class="invalid-feedback" *ngIf="academicLevelId.invalid && academicLevelId.touched">
+            Por favor, seleccione un nivel académico.
+        </div>
     </div>
 
 
@@ -94,7 +113,9 @@
     <div class="form-group">
         <label for="last_name"></label>
         <span class="input-group-text" id="basic-addon1">Grado y Sección</span>
-        <select class="form-select" name="grado" id="grado" [(ngModel)]="Student.gradeId">
+        <select class="form-select" name="grado" id="grado" [(ngModel)]="Student.gradeId" #gradeId="ngModel"
+            [ngClass]="{'is-valid': gradeId.valid && gradeId.touched, 'is-invalid': gradeId.invalid && gradeId.touched}">
+            <option value="" disabled [selected]="true">Seleccione Grado y Sección</option>
             <option value="1">1 "A"</option>
             <option value="2">1 "B"</option>
             <option value="3">1 "C"</option>
@@ -126,6 +147,9 @@
             <option value="29">6 "D"</option>
             <option value="30">6 "E"</option>
         </select>
+        <div class="invalid-feedback" *ngIf="gradeId.invalid && gradeId.touched">
+            Por favor, seleccione un grado y sección.
+        </div>
     </div>
 
 
