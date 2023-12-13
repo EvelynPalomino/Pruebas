@@ -1,14 +1,15 @@
-import {Student} from "./student.model";
-import {Teacher} from "./teacher.model";
-import {Course} from "./course.model";
-import {Grade} from "./grade.model";
-import {NoteDetail} from "./notedetail.model";
-
 export class Note{
     id_note: number = 0;
-    teacher: Teacher = new Teacher();
-    student: Student = new Student();
-    course: Course = new Course();
-    grade: Grade = new Grade();
-    noteDetail: NoteDetail = new NoteDetail();
+    teacher_id: number = 0;
+    student_id: number = 0;
+    courser_id: number = 1;
+    grade_id: number = 0;
+    noteDetail!: {
+        id_notedetail: number;
+        date_submitted: string;
+        comment_register: string;
+        status_note: string;
+    }; 
 }
+
+
