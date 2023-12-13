@@ -69,11 +69,41 @@ export class NoteComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNotes();
+    this.getTeachers();
+    this.getStudents();
+    this.getCourses();
   }
 
+
+  
   getNotes(): void {
     this.noteService.findAll()
       .subscribe(notes => this.notes = notes);
   }
+
+  getTeachers(): void {
+    this.teacherService.getTeachers()
+      .subscribe(teachers => {
+        this.teachers = teachers;
+      });
+  }
+  
+  getTeacherNameById(teacher_id: number): string {
+    const teacher = this.teachers.find(t => t.idTeacher === teacher_id);
+    return teacher ? `${teacher.nameTeacher} ${teacher.lastNameTeacher}` : '';
+  }
+  
+  
+  getStudents(): void {
+    this.studentService.getStudents()
+      .subscribe(students => this.students = students);
+  }
+  
+  getCourses(): void {
+    this.courseService.getCourses()
+      .subscribe(courses => this.courses = courses);
+  }
+  
+  
 
 }

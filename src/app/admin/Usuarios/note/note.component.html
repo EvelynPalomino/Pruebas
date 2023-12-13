@@ -22,12 +22,13 @@
                   <th>Estudiante</th>
                   <th>Curso</th>
                   <th>Grado</th>
+                  <th>Acción</th>
                   <th>Eliminar</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let note of notes; let i = index">
-                  <td>{{ note.teacher_id }}</td>
+                  <td>{{ getTeacherNameById(note.teacher_id) }}</td>
                   <td>{{ note.student_id }}</td>
                   <td>{{ note.courser_id }}</td>
                   <td>{{ note.grade_id }}</td>
