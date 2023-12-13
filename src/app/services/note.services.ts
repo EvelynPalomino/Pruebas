@@ -1,38 +1,51 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { Note } from '../models/note.model'; 
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Note } from 'src/app/models/note.model';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class NoteService {
-  private urlNotes: string = 'http://localhost:8085/app/v1/notes';
-  private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+export class NotesService {
+  private apiUrl = 'http://localhost:8085/app/v1/notes';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>(this.urlNotes);
+  findAll(): Observable<Note[]> {
+    return this.http.get<Note[]>(this.apiUrl)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
+  findNoteById(id: number): Observable<Note> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<Note>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addNote(note: Note): Observable<Note> {
+    return this.http.post<Note>(this.apiUrl, note).pipe(
+      catchError((error) => {
+        console.error('Error en la solicitud POST:', error);
+        throw error; // Puedes lanzar el error nuevamente para que se propague
+      })
+    );
+  }
   
 
-  create(note: Note): Observable<Note> {
-    return this.http.post<Note>(this.urlNotes, note, { headers: this.httpHeaders });
+  updateNote(note: Note): Observable<Note> {
+    const url = `${this.apiUrl}/${note.id_note}`;
+    return this.http.put<Note>(url, note).pipe(
+      catchError(this.handleError)
+    );
   }
 
-  getNote(id: number): Observable<Note> {
-    return this.http.get<Note>(`${this.urlNotes}/${id}`);
+  private handleError(error: any) {
+    // Aquí puedes agregar lógica para manejar errores, como mostrar mensajes de error o registrarlos.
+    console.error('Error:', error);
+    return throwError('Ocurrió un error. Por favor, inténtelo de nuevo.');
   }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.urlNotes}/${id}`, { headers: this.httpHeaders });
-  }
-
-  update(note: Note): Observable<Note> {
-    return this.http.put<Note>(`${this.urlNotes}/${note.id_note}`, note, { headers: this.httpHeaders });
-  }
-
 }

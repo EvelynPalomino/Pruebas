@@ -47,11 +47,10 @@ export class TeacherComponent implements OnInit {
               teacher.nameTeacher.toLowerCase().includes(this.searchName.toLowerCase())) &&
             (this.searchLastName === '' ||
               teacher.lastNameTeacher.toLowerCase().includes(this.searchLastName.toLowerCase())) &&
+              (this.searchDocumentType === '' || teacher.documentTypeId.toString() === this.searchDocumentType)&&
             (this.searchDocumentNumber === '' ||
               teacher.documentNumber.includes(this.searchDocumentNumber)) &&
-            (this.searchSpecialty === '' ||
-              this.convertCourse(teacher.courseId) === this.searchSpecialty) // Filtrar por especialidad
-
+              (this.searchSpecialty === '' || teacher.courseId.toString() === this.searchSpecialty)
         );
 
       this.teachers = filteredTeachers;
