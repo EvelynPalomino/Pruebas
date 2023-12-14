@@ -1,46 +1,45 @@
-<form (ngSubmit)="saveNote()" #noteForm="ngForm">
-    <div class="mb-1 position-relative">
-      <div class="mb-3">
-        <label for="teacher_id">Teacher ID</label>
-        <input type="number" class="form-control" name="teacher_id" [(ngModel)]="note.teacher_id" required>
-      </div>
-      
-      <div class="mb-3">
-        <label for="student_id">Student ID</label>
-        <input type="number" class="form-control" name="student_id" [(ngModel)]="note.student_id" required>
-      </div>
-      
-      <div class="mb-3">
-        <label for="courser_id">Course ID</label>
-        <input type="number" class="form-control" name="courser_id" [(ngModel)]="note.courser_id" required>
-      </div>
-      
-      <div class="mb-3">
-        <label for="grade_id">Grade ID</label>
-        <input type="number" class="form-control" name="grade_id" [(ngModel)]="note.grade_id" required>
-      </div>
-      
-      <!-- Note Detail -->
-      <div class="mb-3">
-        <label for="date_submitted">Date Submitted</label>
-        <input type="text" class="form-control" name="date_submitted" [(ngModel)]="note.noteDetail.date_submitted" required>
-      </div>
-      
-      <div class="mb-3">
-        <label for="comment_register">Comment Register</label>
-        <textarea class="form-control" name="comment_register" [(ngModel)]="note.noteDetail.comment_register" required></textarea>
-      </div>
-      
-      <div class="mb-3">
-        <label for="status_note">Status Note</label>
-        <input type="text" class="form-control" name="status_note" [(ngModel)]="note.noteDetail.status_note" required>
-      </div>
-      
-      <!-- Submit and Close buttons -->
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-      </div>
+<form (ngSubmit)="create()" #noteForm="ngForm">
+  <div class="mb-1 position-relative">
+    <div class="mb-3">
+      <label for="teacher_id">Teacher ID</label>
+      <input type="number" class="form-control" name="teacher_id" [(ngModel)]="note.teacher_id" required>
     </div>
-  </form>
-  
+    
+    <div class="mb-3">
+      <label for="student_id">Student ID</label>
+      <input type="number" class="form-control" name="student_id" [(ngModel)]="note.student_id" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="courser_id">Course ID</label>
+      <input type="number" class="form-control" name="courser_id" [(ngModel)]="note.courser_id" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="grade_id">Grade ID</label>
+      <input type="number" class="form-control" name="grade_id" [(ngModel)]="note.grade_id" required>
+    </div>
+    
+    <!-- Note Detail -->
+    <div class="mb-3">
+      <label for="date_submitted">Date Submitted</label>
+      <input type="text" class="form-control" name="date_submitted" [(ngModel)]="note.noteDetail.date_submitted" required>
+    </div>
+    
+    <div class="mb-3">
+      <label for="comment_register">Comment Register</label>
+      <textarea class="form-control" name="comment_register" [(ngModel)]="note.noteDetail.comment_register" required></textarea>
+    </div>
+    
+    <div class="mb-3">
+      <label for="status_note">Status Note</label>
+      <input type="text" class="form-control" name="status_note" [(ngModel)]="note.noteDetail.status_note" required>
+    </div>
+    
+    <!-- Submit and Close buttons -->
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+    </div>
+  </div>
+</form>

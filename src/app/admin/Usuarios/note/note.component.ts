@@ -12,6 +12,8 @@ import { NotesService } from 'src/app/services/note.services';
 import { StudentService } from 'src/app/services/student.services';
 import { TeacherServices } from 'src/app/services/teacher.services';
 import Swal from 'sweetalert2';
+import { NoteFormComponent } from 'src/app/forms/note-form/note-form.component';
+
 
 @Component({
   selector: 'app-note',
@@ -44,7 +46,7 @@ export class NoteComponent implements OnInit {
     noteDetail: {
       id_notedetail: 0,
       comment_register: '',
-      date_submitted: new Date().toISOString(),
+      date_submitted: new Date(),
       status_note: '',
     }
   };
@@ -54,12 +56,14 @@ export class NoteComponent implements OnInit {
     FormsModule
   ];
   searchQuery: string = '';
+  modalService: any;
+  createdNote: any;
 
   // ... (métodos y funciones existentes)
 
   search(): void {
     if (this.searchQuery.trim() !== '') {
-      
+
       this.displayedNotes = this.notes.filter(note =>
         this.getTeacherNameById(note.teacher_id).toLowerCase().includes(this.searchQuery.toLowerCase())
       );
@@ -67,7 +71,7 @@ export class NoteComponent implements OnInit {
       this.displayedNotes = this.notes;
     }
   }
-  
+
 
   clearSearch(): void {
     this.searchQuery = '';
@@ -75,7 +79,7 @@ export class NoteComponent implements OnInit {
   }
 
   showAddForm(): void {
-  
+
     this.showForm = true;
   }
 
@@ -93,6 +97,7 @@ export class NoteComponent implements OnInit {
     private studentService: StudentService,
     private courseService: CourseService,
     private gradeService: GradeService,
+
   ) { this.showForm = false; }
 
 
@@ -204,6 +209,47 @@ export class NoteComponent implements OnInit {
   }
 
 
+  // ... Código previo
+
+  getStatusDescription(statusCode: string): string {
+    switch (statusCode) {
+      case 'A':
+        return 'Aprobado';
+      case 'D':
+        return 'Desaprobado';
+      case 'P':
+        return 'Pendiente';
+      default:
+        return 'Desconocido'; // Puedes manejar cualquier otro estado no esperado aquí
+    }
+  }
+
+
+  openCreateModal(): void {
+    this.createdNote = new Note();
+    this.showForm = true;
+
+    const modalRef = this.modalService.open(NoteFormComponent, {
+      size: 'lg',
+    });
+    modalRef.componentInstance.note = this.createdNote;
+    modalRef.result.then(
+      (result: string) => {
+        if (result === 'created') {
+
+        }
+      },
+      (reason: string) => {
+        if (reason === 'closed') {
+          this.closeCreatedModal();
+        }
+      }
+    );
+  }
+
+  closeCreatedModal() {
+    this.showForm = false;
+  }
 
 
 }
