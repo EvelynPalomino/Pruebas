@@ -8,6 +8,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class NotesService {
+  [x: string]: any;
   private apiUrl = 'http://localhost:8085/app/v1/notes';
 
   constructor(private http: HttpClient) {}
@@ -34,12 +35,22 @@ export class NotesService {
       })
     );
   }
-  
+
 
   updateNote(note: Note): Observable<Note> {
     const url = `${this.apiUrl}/${note.id_note}`;
     return this.http.put<Note>(url, note).pipe(
       catchError(this.handleError)
+    );
+  }
+
+  deleteNote(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url).pipe(
+      catchError((error) => {
+        console.error('Error en la solicitud DELETE:', error);
+        return throwError('No se pudo eliminar la nota. Por favor, inténtelo de nuevo.');
+      })
     );
   }
 

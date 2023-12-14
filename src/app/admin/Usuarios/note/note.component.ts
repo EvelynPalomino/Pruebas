@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { catchError } from 'rxjs/operators';
 import { Course } from 'src/app/models/course.model';
 import { Note } from 'src/app/models/note.model';
@@ -11,6 +11,7 @@ import { GradeService } from 'src/app/services/grade.services';
 import { NotesService } from 'src/app/services/note.services';
 import { StudentService } from 'src/app/services/student.services';
 import { TeacherServices } from 'src/app/services/teacher.services';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-note',
@@ -48,6 +49,41 @@ export class NoteComponent implements OnInit {
     }
   };
 
+  imports!: [
+    // ... Otras importaciones
+    FormsModule
+  ];
+  searchQuery: string = '';
+
+  // ... (métodos y funciones existentes)
+
+  search(): void {
+    if (this.searchQuery.trim() !== '') {
+      
+      this.displayedNotes = this.notes.filter(note =>
+        this.getTeacherNameById(note.teacher_id).toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.displayedNotes = this.notes;
+    }
+  }
+  
+
+  clearSearch(): void {
+    this.searchQuery = '';
+    this.getNotes();
+  }
+
+  showAddForm(): void {
+  
+    this.showForm = true;
+  }
+
+
+
+
+
+
   // Combobox options
   statusOptions: string[] = ['A', 'P', 'D'];
 
@@ -72,14 +108,51 @@ export class NoteComponent implements OnInit {
     this.getTeachers();
     this.getStudents();
     this.getCourses();
+    this.getGrades();
   }
 
 
-  
+
   getNotes(): void {
     this.noteService.findAll()
       .subscribe(notes => this.notes = notes);
   }
+
+  deleteNoteConfirmation(note: Note): void {
+    if (note && note.id_note) {
+      // Muestra un modal de confirmación
+      Swal.fire({
+        title: '¿Eliminar nota?',
+        text: `Si eliminas la nota, se eliminará permanentemente.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result: { isConfirmed: any; }) => {
+        // Si el usuario confirma la eliminación, procede a eliminar la nota
+        if (result.isConfirmed) {
+          this.noteService.deleteNote(note.id_note).subscribe(
+            response => {
+              // Elimina la nota de la lista después de la eliminación exitosa
+              this.notes = this.notes.filter(n => n !== note);
+
+              // Muestra un mensaje de éxito después de la eliminación
+              Swal.fire('Eliminada', `Nota eliminada con éxito`, 'success');
+            },
+            error => {
+              console.error('Error al eliminar la nota:', error);
+              Swal.fire('Error', `No se pudo eliminar la nota`, 'error');
+            }
+          );
+        }
+      });
+    } else {
+      console.error('Nota inválida o sin ID');
+    }
+  }
+
 
   getTeachers(): void {
     this.teacherService.getTeachers()
@@ -87,23 +160,50 @@ export class NoteComponent implements OnInit {
         this.teachers = teachers;
       });
   }
-  
+
   getTeacherNameById(teacher_id: number): string {
     const teacher = this.teachers.find(t => t.idTeacher === teacher_id);
     return teacher ? `${teacher.nameTeacher} ${teacher.lastNameTeacher}` : '';
   }
-  
-  
+
+
   getStudents(): void {
     this.studentService.getStudents()
-      .subscribe(students => this.students = students);
+      .subscribe(students => {
+        this.students = students;
+      });
   }
-  
+
+  getStudentNameById(student_id: number): string {
+    const student = this.students.find(s => s.id === student_id);
+    return student ? `${student.names} ${student.lastName}` : '';
+  }
+
   getCourses(): void {
     this.courseService.getCourses()
-      .subscribe(courses => this.courses = courses);
+      .subscribe(courses => {
+        this.courses = courses;
+      });
   }
-  
-  
+
+  getCourseNameById(courser_id: number): string {
+    const course = this.courses.find(c => c.id === courser_id);
+    return course ? course.name : '';
+  }
+
+  getGrades(): void {
+    this.gradeService.getGrades()
+      .subscribe(grades => {
+        this.grades = grades;
+      });
+  }
+
+  getGradeInfoById(grade_id: number): string {
+    const grade = this.grades.find(g => g.id === grade_id);
+    return grade ? `${grade.grade} "${grade.section}"` : '';
+  }
+
+
+
 
 }

@@ -128,22 +128,27 @@
     </div>
 
     <div class="mb-3">
-      <label for="document_number_teacher"></label>
+      <label for="document_number_teacher">Número de Documento</label>
       <span class="input-group-text" id="basic-addon1">Número de Documento</span>
       <input type="text" class="form-control" placeholder="Número de Documento" aria-label="Número de Documento"
         aria-describedby="basic-addon1" name="document_number_teacher" [(ngModel)]="teacher.documentNumber" required
-        [pattern]="teacher.documentTypeId === 1 ? '[0-9]{8}' : '[0-9]{12}'" #documentNumberInput="ngModel"
+        [pattern]="teacher.documentTypeId === 2 ? '[0-9]{8}' : '[0-9]{12}'" #documentNumberInput="ngModel"
         [ngClass]="{'is-invalid': documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched), 'is-valid': documentNumberInput.valid && documentNumberInput.touched}" />
       <div class="text-danger"
         *ngIf="documentNumberInput.invalid && (documentNumberInput.dirty || documentNumberInput.touched)">
         <div *ngIf="documentNumberInput.hasError('required')">El número de documento es requerido.</div>
-        <div *ngIf="documentNumberInput.hasError('pattern')">El número de documento debe contener {{
-          teacher.documentTypeId === 1 ? '8' : '12' }} dígitos numéricos.</div>
+        <div *ngIf="documentNumberInput.hasError('pattern')">
+          El número de documento debe contener {{
+          teacher.documentTypeId === 2 ? '8 dígitos (DNI)' : '12 dígitos (CNE)' }} numéricos.
+        </div>
       </div>
       <div class="text-success" *ngIf="documentNumberInput.valid && documentNumberInput.touched">
         Correcto
       </div>
     </div>
+    
+    
+    
     
     
 

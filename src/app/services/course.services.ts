@@ -30,7 +30,7 @@ export class CourseService {
   }
 
   update(course: Course): Observable<Course> {
-    return this.http.put<Course>(`${this.urlCourses}/${course.idCourse}`, course, { headers: this.httpHeaders });
+    return this.http.put<Course>(`${this.urlCourses}/${course.id}`, course, { headers: this.httpHeaders });
   }
 
   deleteDeactivate(id: number): Observable<any> {
@@ -45,7 +45,7 @@ export class CourseService {
 
   getInactiveCourses(): Observable<Course[]> {
     return this.getCourses().pipe(
-      map(courses => courses.filter(course => course.stateCourse === 'I'))
+      map(courses => courses.filter(course => course.state === 'I'))
     );
   }
 }

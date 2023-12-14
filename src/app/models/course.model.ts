@@ -1,6 +1,6 @@
 export class Course {
-    idCourse: number = 0;
-    nameCourse: string = '';
-    stateCourse: string = '';
+    id: number = 0;
+    name: string = '';
+    state: string = '';
   }
   

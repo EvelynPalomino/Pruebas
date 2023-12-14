@@ -30,7 +30,7 @@ export class GradeService {
   }
 
   update(grade: Grade): Observable<Grade> {
-    return this.http.put<Grade>(`${this.urlGrades}/${grade.idGrade}`, grade, { headers: this.httpHeaders });
+    return this.http.put<Grade>(`${this.urlGrades}/${grade.id}`, grade, { headers: this.httpHeaders });
   }
 
   deleteDeactivate(id: number): Observable<any> {
