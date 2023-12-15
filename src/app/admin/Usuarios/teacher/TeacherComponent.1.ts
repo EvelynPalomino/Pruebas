@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 
 
@@ -47,10 +48,10 @@ export class TeacherComponent implements OnInit {
               teacher.nameTeacher.toLowerCase().includes(this.searchName.toLowerCase())) &&
             (this.searchLastName === '' ||
               teacher.lastNameTeacher.toLowerCase().includes(this.searchLastName.toLowerCase())) &&
-              (this.searchDocumentType === '' || teacher.documentTypeId.toString() === this.searchDocumentType)&&
+            (this.searchDocumentType === '' || teacher.documentTypeId.toString() === this.searchDocumentType) &&
             (this.searchDocumentNumber === '' ||
               teacher.documentNumber.includes(this.searchDocumentNumber)) &&
-              (this.searchSpecialty === '' || teacher.courseId.toString() === this.searchSpecialty)
+            (this.searchSpecialty === '' || teacher.courseId.toString() === this.searchSpecialty)
         );
 
       this.teachers = filteredTeachers;
@@ -286,19 +287,100 @@ export class TeacherComponent implements OnInit {
       });
   }
 
+  //EXPORTACION DE DATOS
   exportToPDF() {
-    this.http.get<any[]>('http://localhost:8085/app/v1/teachers').subscribe(
-      (data: any[]) => {
-        if (data && data.length > 0) {
-          this.generatePDF(data);
-        } else {
-          console.warn('No hay datos para generar el PDF.');
+    Swal.fire({
+      title: 'Exportar informe',
+      text: '¿Deseas exportar este informe de las alumnas?',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Exportar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Exportando a PDF');
+
+        if (!this.teachers || this.teachers.length === 0) {
+          console.error('No hay datos de alumnas disponibles.');
+          return;
         }
-      },
-      (error) => {
-        console.error('Error al obtener datos:', error);
+
+        const doc = new jsPDF('landscape');
+
+        // Agregar fondo rojo a la izquierda de la cabecera y ajustar la altura
+        doc.setFillColor(255, 255, 255); // Fondo rojo
+        doc.rect(0, 0, doc.internal.pageSize.width, 60, 'F'); // Rectángulo rojo para toda la cabecera
+
+
+        // Agregar título en medio de la cabecera con color rojo
+        doc.setFillColor(255, 0, 0); // Cambiar color de fondo de la cabecera a rojo
+        doc.rect(0, 0, doc.internal.pageSize.width, 40, 'F'); // Rectángulo como fondo de la cabecera
+
+        // Agregar imagen a la derecha
+        const logoUrl = 'https://i.ibb.co/gWGwbyQ/330158531-1321988551711293-7007550439193672835-n.jpg'; // Reemplaza 'ruta_de_tu_imagen/logo.png' con la ruta correcta de tu imagen
+        const imageWidth = 30; // Ancho de la imagen
+        const imageHeight = 30; // Alto de la imagen
+        const imageX = doc.internal.pageSize.width - imageWidth - 20; // Coloca la imagen a la derecha
+        const imageY = 5; // Ajusta la posición vertical según tus necesidades
+        doc.addImage(logoUrl, 'PNG', imageX, imageY, imageWidth, imageHeight);
+
+        doc.setTextColor(255, 255, 255); // Texto blanco
+        doc.setFont("helvetica", "bold"); // Cambiar a una fuente en negrita (puedes ajustar según las fuentes disponibles en tu entorno)
+        doc.setFontSize(24); // Tamaño del título aumentado
+        const title = 'Listado de Profesores';
+        const titleWidth = doc.getStringUnitWidth(title) * 24; // Ajusta el factor según tus necesidades
+        const middleOfPage = doc.internal.pageSize.width / 2;
+        const titleX = middleOfPage - titleWidth / 2; // Ajusta el desplazamiento hacia la derecha y el factor según tus necesidades
+        const titleY = 25; // Ajusta la posición vertical según tus necesidades
+        doc.text(title, titleX, titleY);
+
+
+
+
+        const columns = [
+          ['APELLIDO', 'NOMBRE', 'TIPO DOC', 'N° DOC', 'CORREO', 'CELULAR', 'USUARIO'],
+        ];
+
+        // Ajusta la posición vertical para aumentar la separación entre la cabecera y la tabla
+        const separationSpace = 40; // Ajusta según sea necesario
+        const startY = titleY + separationSpace;
+
+        autoTable(doc, {
+          head: columns,
+          body: this.teachers.map(teachers => [
+            teachers.lastNameTeacher,
+            teachers.nameTeacher,
+            teachers.documentTypeId,
+            teachers.documentNumber,
+            teachers.email,
+            teachers.phoneNumber,
+            teachers.userTeacher,
+            teachers.salary,
+          ]),
+          startY: startY,
+          tableWidth: 'auto',
+          styles: {
+            textColor: [0, 0, 0], // Color del texto de las filas (negro)
+            fontSize: 10,
+          },
+          headStyles: {
+            // Estilo de la cabecera (en este caso, a todas las columnas)
+            fillColor: [255, 0, 0], // Color rojo
+            textColor: [255, 255, 255], // Texto blanco
+          },
+        });
+
+        doc.save('Teacher.pdf');
+
+        Swal.fire({
+          icon: 'success',
+          title: '¡Jasper Report exportado!',
+          text: 'El jasper report de apoderados se ha exportado exitosamente.',
+        });
       }
-    );
+    });
   }
 
   generatePDF(data: any[]) {
