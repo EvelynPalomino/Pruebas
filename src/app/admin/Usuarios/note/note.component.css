@@ -201,12 +201,12 @@ h2 {
 }
 
 .modal-container button.btn-cancel {
-  background-color: #e74c3c;
+  background-color: #7f7d87;
   color: #fff;
 }
 
 .modal-container button.btn-cancel:hover {
-  background-color: #c0392b;
+  background-color: #5a5a5a;
 }
 
 .row {

@@ -35,11 +35,10 @@ export class NoteComponent implements OnInit {
   selectedNote: Note | null = null;
   errorMessage = '';
   showAddFormText: string = 'Nuevo Nota';
-  showAddFormSubtitle: string = 'Ingrese los datos necesarios';
+  showAddFormSubtitle: string = 'Agrega un nueva nota a la lista';
   errorText: string = '';
   successMessage: string = '';
   createdNote: Note = new Note();
-  searchCourse: any;
   // Función para mostrar la alerta de Swal
   showSwalAlert(icon: any, title: string, text: string): void {
     Swal.fire({
@@ -82,24 +81,11 @@ export class NoteComponent implements OnInit {
 
   public searchNotes(): void {
     // Filtrar las notas según el término de búsqueda (searchQuery)
-    this.displayedNotes = this.notes.filter(note => {
-      const studentName = this.getStudentNameById(note.student_id).toLowerCase();
-      const courseName = this.getCourseNameById(note.courser_id).toLowerCase();
-      const searchTerms = this.searchQuery.toLowerCase().split(' ');
-      const courseSearchTerm = this.searchCourse.toLowerCase();
-  
-      return (
-        searchTerms.some(term => studentName.includes(term)) &&
-        (courseName.includes(courseSearchTerm) || courseSearchTerm === '')
-      );
-    });
+    this.displayedNotes = this.notes.filter(note =>
+      this.getStudentNameById(note.student_id).toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+      this.getTeacherNameById(note.teacher_id).toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
-  
-  clearSearch() {
-    this.searchCourse = '';
-    this.searchQuery = '';
-  }
-  
 
   // Variables para el formulario
   newNoteForm: Note = {
@@ -172,6 +158,8 @@ export class NoteComponent implements OnInit {
   }
 
   addNote(): void {
+    // Validar la categoría antes de agregar la nota
+   
 
     // Lógica para agregar la nota utilizando el servicio
     // Lógica para agregar la nota utilizando el servicio
@@ -209,6 +197,7 @@ export class NoteComponent implements OnInit {
       this.successMessage = '';
     }, 3000);
   }
+
 
 
   resetForm(): void {
@@ -292,7 +281,7 @@ export class NoteComponent implements OnInit {
           this.errorMessage = '';
           this.showForm = true;
           this.showAddFormText = 'Nueva Nota';
-          this.showAddFormSubtitle = 'Ingrese los datos necesarios';
+          this.showAddFormSubtitle = 'Añadir un nueva nota a la lista';
         });
     }
   }
@@ -364,6 +353,7 @@ export class NoteComponent implements OnInit {
       console.error('Nota inválida o sin ID');
     }
   }
+
 
 
 } 

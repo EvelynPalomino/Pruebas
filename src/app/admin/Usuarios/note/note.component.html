@@ -1,163 +1,171 @@
 <app-home></app-home>
-<br>
-<br>
-<br>
+<!-- note-list.component.html -->
+<div class="container">
+  <div class="card border-primary mb-3">
+    <div class="card-header">Teacher</div>
+    <div class="card-body text-primary">
+      <h5 class="card-title">Listado de Notas</h5>
+      <!-- Filtros de búsqueda -->
+      <div class="search-filters">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Busca por...">
+        <button (click)="searchNotes()">Buscar</button>
+      </div>
 
+      <!-- Botón fuera del formulario -->
+      <button type="button" class="btn btn-primary mb-3" (click)="showForm = true">Agregar Nota</button>
 
-<div class="container-fluid">
-  <div class="row justify-content-center">
-    <div class="col-md-9">
-        <!-- note-list.component.html -->
-        <div class="container">
-          <div class="card border-primary mb-3">
-            <div class="card-header">Notas</div>
-            <div class="card-body text-primary">
-              <h5 class="card-title">Listado de Notas</h5>
+      <!-- Ventana modal para agregar y editar una nota -->
+      <div class="modal" [style.display]="showForm ? 'block' : 'none'">
+        <div class="modal-container">
+          <h2>{{ showAddFormText }}</h2>
+          <h3 class="subtitle">{{ showAddFormSubtitle }}</h3>
 
-              <div class="search-container text-center">
-                <!-- Filtros de búsqueda -->
-                <div class="search-filters">
-                  <input type="text" [(ngModel)]="searchQuery" placeholder="Busca por...">
-                  <input type="text" [(ngModel)]="searchCourse" placeholder="Curso">
-                  <button type="button" class="btn btn-primary" (click)="searchNotes()">Buscar</button>
-                  <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
+          <!-- Formulario para agregar nota -->
+          <form *ngIf="showForm" (submit)="addNote()">
+            <div class="row">
+              <!-- Primera fila: Teacher y Course -->
+              <div class="col">
+                <label for="teacher">Docente:</label>
+                <select id="teacher" name="teacher_id" [(ngModel)]="newNoteForm.teacher_id" required>
+                  <option *ngFor="let teacher of teachers" [value]="teacher.idTeacher">{{
+                    getTeacherNameById(teacher.idTeacher) }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col">
+                <label for="course">Curso:</label>
+                <select id="course" name="course_id" [(ngModel)]="newNoteForm.courser_id" required>
+                  <option *ngFor="let course of courses" [value]="course.id">{{ getCourseNameById(course.id) }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Segunda fila: Student y Note -->
+              <div class="col">
+                <label for="student">Estudiante:</label>
+                <select id="student" name="student_id" [(ngModel)]="newNoteForm.student_id" required>
+                  <option *ngFor="let student of students" [value]="student.id">{{ getStudentNameById(student.id) }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col">
+                <label for="course">Grado:</label>
+                <select id="course" name="course_id" [(ngModel)]="newNoteForm.grade_id" required>
+                  <option *ngFor="let grade of grades" [value]="grade.id">{{ getGradeInfoById(grade.id) }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Tercera fila: Note Category y Date -->
+              <div class="col">
+                <label for="category">Comentario:</label>
+                <input id="category" name="category" [(ngModel)]="newNoteForm.noteDetail.comment_register" required
+                  #categoryInput="ngModel">
+                <!-- Mensaje de error para la categoría -->
+                <div *ngIf="categoryInput.invalid && (categoryInput.dirty || categoryInput.touched)">
+                  <!-- Elimina la parte relacionada con el patrón -->
+                  La categoría debe contener solo letras.
+                </div>
+              </div>
+
+              <div class="col">
+                <label for="date">Fecha:</label>
+                <input id="date" name="date_note" [(ngModel)]="newNoteForm.noteDetail.date_submited" type="date"
+                  required>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Cuarta fila: Status y Botones -->
+
+              <div class="col">
+                <label for="status">Estado:</label>
+                <select id="status" name="status" [(ngModel)]="newNoteForm.noteDetail.status_note" required>
+                  <option *ngFor="let option of statusOptions" [value]="option">{{ option }}</option>
+                </select>
+              </div>
+
+              <!-- Botones dentro del formulario -->
+              <div class="row">
+                <!-- Botón para guardar los cambios -->
+                <div class="col">
+                  <button type="button" class="btn btn-primary" type="submit" class="btn-save">Guardar</button>
                 </div>
 
-                <!-- Botón fuera del formulario -->
-                <button type="button" class="btn btn-primary mb-3" (click)="showForm = true">Agregar Nota</button>
-
-                <!-- Ventana modal para agregar y editar una nota -->
-                <div class="modal" [style.display]="showForm ? 'block' : 'none'">
-                  <div class="modal-container">
-                    <h2>{{ showAddFormText }}</h2>
-                    <h3 class="subtitle">{{ showAddFormSubtitle }}</h3>
-
-                    <!-- Formulario para agregar nota -->
-                    <form *ngIf="showForm" (submit)="addNote()">
-                      <div class="row">
-                        <!-- Primera fila: Teacher y Course -->
-                        <div class="col">
-                          <label for="teacher">Teacher:</label>
-                          <select id="teacher" name="teacher_id" [(ngModel)]="newNoteForm.teacher_id" required>
-                            <option *ngFor="let teacher of teachers" [value]="teacher.idTeacher">{{
-                              getTeacherNameById(teacher.idTeacher) }}
-                            </option>
-                          </select>
-                        </div>
-
-                        <div class="col">
-                          <label for="course">Course:</label>
-                          <select id="course" name="course_id" [(ngModel)]="newNoteForm.courser_id" required>
-                            <option *ngFor="let course of courses" [value]="course.id">{{
-                              getCourseNameById(course.id) }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <!-- Segunda fila: Student y Note -->
-                        <div class="col">
-                          <label for="student">Student:</label>
-                          <select id="student" name="student_id" [(ngModel)]="newNoteForm.student_id" required>
-                            <option *ngFor="let student of students" [value]="student.id">{{
-                              getStudentNameById(student.id) }}
-                            </option>
-                          </select>
-                        </div>
-
-                        <div class="col">
-                          <label for="course">Grade:</label>
-                          <select id="course" name="course_id" [(ngModel)]="newNoteForm.grade_id" required>
-                            <option *ngFor="let grade of grades" [value]="grade.id">{{ getGradeInfoById(grade.id)
-                              }}</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <!-- Tercera fila: Note Category y Date -->
-                        <div class="col">
-                          <label for="category">Category:</label>
-                          <input id="category" name="category" [(ngModel)]="newNoteForm.noteDetail.comment_register"
-                            required #categoryInput="ngModel">
-                          <!-- Mensaje de error para la categoría -->
-                          <div *ngIf="categoryInput.invalid && (categoryInput.dirty || categoryInput.touched)">
-                            <!-- Elimina la parte relacionada con el patrón -->
-                            La categoría debe contener solo letras.
-                          </div>
-                        </div>
-
-                        <div class="col">
-                          <label for="date">Date:</label>
-                          <input id="date" name="date_note" [(ngModel)]="newNoteForm.noteDetail.date_submited"
-                            type="date" required>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <!-- Cuarta fila: Status y Botones -->
-
-                        <div class="col">
-                          <label for="status">Estado:</label>
-                          <select id="status" name="status" [(ngModel)]="newNoteForm.noteDetail.status_note" required>
-                            <option *ngFor="let option of statusOptions" [value]="option">{{ option }}</option>
-                          </select>
-                        </div>
-
-                        <!-- Botones dentro del formulario -->
-                        <div class="row">
-                          <!-- Botón para guardar los cambios -->
-                          <div class="col">
-                            <button type="button" class="btn btn-primary">Guardar</button>
-                          </div>
-
-                          <!-- Botón para cancelar y cerrar el formulario -->
-                          <div class="col">
-                            <button type="button" class="btn btn-secondary" (click)="cancelAdd()"> Cerrar
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+                <!-- Botón para cancelar y cerrar el formulario -->
+                <div class="col">
+                  <button type="button" class="btn btn-secondary" type="button" class="btn-cancel"
+                    (click)="cancelAdd()">
+                    Cerrar
+                  </button>
                 </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
 
-                <!-- Tabla para mostrar la lista de profesores -->
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Docente</th>
-                      <th>Estudiante</th>
-                      <th>Curso</th>
-                      <th>Grado</th>
-                      <th>Comentario</th>
-                      <th>Fecha Nota</th>
-                      <th>Estado</th>
-                      <th>Acciones</th>
-                      <th>Eliminar</th>
-                    </tr>
-                  </thead>
+      <!-- Tabla para mostrar la lista de profesores -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Docente</th>
+            <th>Curso</th>
+            <th>Estudiante</th>
+            <th>Grado</th>
+            <th>Comentario</th>
+            <th>Fecha Nota</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
 
-                  <tbody>
-                    <tr *ngFor="let note of notes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)">
-                      <td>{{ getTeacherNameById(note.teacher_id) }}</td>
-                      <td>{{ getStudentNameById(note.student_id) }}</td>
-                      <td>{{ getCourseNameById(note.courser_id) }}</td>
-                      <td>{{ getGradeInfoById(note.grade_id) }}</td>
-                      <td>{{ note.noteDetail.date_submited | date : "dd-MM-yyyy" }}</td>
-                      <td>{{ note.noteDetail.comment_register }}</td>
-                      <td>{{ getStatusDescription(note.noteDetail.status_note || '') }}</td>
-                      <td style="text-align: center;">
-                        <!-- Botón para modificar nota -->
-                        <button type="button" class="btn btn-warning btn-sm" (click)="editNote(note)">Editar</button>
-                      </td>
+        <tbody>
+          <tr *ngFor="let note of notes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)">
+            <td>{{ getTeacherNameById(note.teacher_id) }}</td>
+            <td>{{ getCourseNameById(note.courser_id) }}</td>
+            <td>{{ getStudentNameById(note.student_id) }}</td>
+            <td>{{ getGradeInfoById(note.grade_id) }}</td>
+            <td>{{ note.noteDetail.comment_register }}</td>
+            <td>{{ note.noteDetail.date_submited | date : "dd-MM-yyyy" }}</td>
+            <td>{{ getStatusDescription(note.noteDetail.status_note || '') }}</td>
+            <td style="text-align: center;">
+              <!-- Botón para modificar nota -->
+              <button type="button" class="btn btn-warning btn-sm" (click)="editNote(note)">Editar</button>
+            </td>
 
-                      <td>
-                        <button type="button" class="btn btn-danger btn-sm"
-                          (click)="deleteNoteConfirmation(note)">Eliminar</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  
+            <td>
+              <button type="button" class="btn btn-danger btn-sm"
+                (click)="deleteNoteConfirmation(note)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- Navegación de páginas -->
+        <div class="page-navigation">
+          <!-- Botón para ir a la página anterior -->
+          <button class="page-navigation-button" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1"
+            *ngIf="currentPage > 1">
+            <i class="fa fa-chevron-left"></i>
+          </button>
+
+          <!-- Número de página actual -->
+          <p class="page-number">Página {{ currentPage }}</p>
+
+          <!-- Botón para ir a la página siguiente -->
+          <button class="page-navigation-button" (click)="goToPage(currentPage + 1)"
+            *ngIf="currentPage * itemsPerPage < notes.length">
+            <i class="fa fa-chevron-right"></i>
+          </button>
+        </div>
+      </table>
+    </div>
+  </div>
+</div>
