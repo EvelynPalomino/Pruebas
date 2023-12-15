@@ -8,6 +8,9 @@ import { Course } from '../models/course.model';
   providedIn: 'root'
 })
 export class CourseService {
+  getGrades() {
+    throw new Error('Method not implemented.');
+  }
   private urlCourses: string = 'http://localhost:8085/app/v1/courses';
   private httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 

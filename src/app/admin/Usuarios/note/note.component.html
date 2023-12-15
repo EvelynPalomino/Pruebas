@@ -2,72 +2,162 @@
 <br>
 <br>
 <br>
+
+
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-md-9">
-      <!-- Contenido principal -->
-      <div class="card border-primary mb-3">
-        <div class="card-header">Notas</div>
-        <div class="card-body text-primary">
-          <div class="row justify-content-between align-items-center mb-3">
-            <div class="col-md-6">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Buscar por profesor, estudiante, curso..."
-  [(ngModel)]="searchQuery">
-                <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="button" (click)="search()">Buscar</button>
-                  <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">Limpiar</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 text-right">
-              <button class="btn btn-primary" type="button" (click)="openCreateModal()">Agregar Nota</button>
-            </div>
-          </div>
-          <div class="my-5 text-left"></div>
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered w-100 small">
-              <thead>
-                <!-- Encabezados de la tabla -->
-                <tr class="table-primary">
-                  <th>Profesor</th>
-                  <th>Estudiante</th>
-                  <th>Curso</th>
-                  <th>Grado</th>
-                  <th>Fecha de Registro</th>
-                  <th>Comentarios</th>
-                  <th>Estado</th>
-                  <th>Acción</th>
-                  <th>Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let note of notes; let i = index">
-                  <td>{{ getTeacherNameById(note.teacher_id) }}</td>
-                  <td>{{ getStudentNameById(note.student_id) }}</td>
-                  <td>{{ getCourseNameById(note.courser_id) }}</td>
-                  <td>{{ getGradeInfoById(note.grade_id) }}</td>
-                  <td>{{ note.noteDetail?.date_submitted }}</td>
-                  <td>{{ note.noteDetail?.comment_register }}</td>
-                  <td>{{ getStatusDescription(note.noteDetail?.status_note || '') }}</td>
-                  <td>
-                    <button type="button" class="btn btn-warning btn-sm" (click)="(note)">Editar</button>
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-danger btn-sm"
-                      (click)="deleteNoteConfirmation(note)">Eliminar</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br>
-  <br>
-  <br>
+        <!-- note-list.component.html -->
+        <div class="container">
+          <div class="card border-primary mb-3">
+            <div class="card-header">Notas</div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">Listado de Notas</h5>
 
-  <app-footer></app-footer>
-</div>
+              <div class="search-container text-center">
+                <!-- Filtros de búsqueda -->
+                <div class="search-filters">
+                  <input type="text" [(ngModel)]="searchQuery" placeholder="Busca por...">
+                  <input type="text" [(ngModel)]="searchCourse" placeholder="Curso">
+                  <button type="button" class="btn btn-primary" (click)="searchNotes()">Buscar</button>
+                  <button type="button" class="btn btn-secondary ml-2" (click)="clearSearch()">Limpiar</button>
+                </div>
+
+                <!-- Botón fuera del formulario -->
+                <button type="button" class="btn btn-primary mb-3" (click)="showForm = true">Agregar Nota</button>
+
+                <!-- Ventana modal para agregar y editar una nota -->
+                <div class="modal" [style.display]="showForm ? 'block' : 'none'">
+                  <div class="modal-container">
+                    <h2>{{ showAddFormText }}</h2>
+                    <h3 class="subtitle">{{ showAddFormSubtitle }}</h3>
+
+                    <!-- Formulario para agregar nota -->
+                    <form *ngIf="showForm" (submit)="addNote()">
+                      <div class="row">
+                        <!-- Primera fila: Teacher y Course -->
+                        <div class="col">
+                          <label for="teacher">Teacher:</label>
+                          <select id="teacher" name="teacher_id" [(ngModel)]="newNoteForm.teacher_id" required>
+                            <option *ngFor="let teacher of teachers" [value]="teacher.idTeacher">{{
+                              getTeacherNameById(teacher.idTeacher) }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col">
+                          <label for="course">Course:</label>
+                          <select id="course" name="course_id" [(ngModel)]="newNoteForm.courser_id" required>
+                            <option *ngFor="let course of courses" [value]="course.id">{{
+                              getCourseNameById(course.id) }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <!-- Segunda fila: Student y Note -->
+                        <div class="col">
+                          <label for="student">Student:</label>
+                          <select id="student" name="student_id" [(ngModel)]="newNoteForm.student_id" required>
+                            <option *ngFor="let student of students" [value]="student.id">{{
+                              getStudentNameById(student.id) }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col">
+                          <label for="course">Grade:</label>
+                          <select id="course" name="course_id" [(ngModel)]="newNoteForm.grade_id" required>
+                            <option *ngFor="let grade of grades" [value]="grade.id">{{ getGradeInfoById(grade.id)
+                              }}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <!-- Tercera fila: Note Category y Date -->
+                        <div class="col">
+                          <label for="category">Category:</label>
+                          <input id="category" name="category" [(ngModel)]="newNoteForm.noteDetail.comment_register"
+                            required #categoryInput="ngModel">
+                          <!-- Mensaje de error para la categoría -->
+                          <div *ngIf="categoryInput.invalid && (categoryInput.dirty || categoryInput.touched)">
+                            <!-- Elimina la parte relacionada con el patrón -->
+                            La categoría debe contener solo letras.
+                          </div>
+                        </div>
+
+                        <div class="col">
+                          <label for="date">Date:</label>
+                          <input id="date" name="date_note" [(ngModel)]="newNoteForm.noteDetail.date_submited"
+                            type="date" required>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <!-- Cuarta fila: Status y Botones -->
+
+                        <div class="col">
+                          <label for="status">Estado:</label>
+                          <select id="status" name="status" [(ngModel)]="newNoteForm.noteDetail.status_note" required>
+                            <option *ngFor="let option of statusOptions" [value]="option">{{ option }}</option>
+                          </select>
+                        </div>
+
+                        <!-- Botones dentro del formulario -->
+                        <div class="row">
+                          <!-- Botón para guardar los cambios -->
+                          <div class="col">
+                            <button type="button" class="btn btn-primary">Guardar</button>
+                          </div>
+
+                          <!-- Botón para cancelar y cerrar el formulario -->
+                          <div class="col">
+                            <button type="button" class="btn btn-secondary" (click)="cancelAdd()"> Cerrar
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+
+                <!-- Tabla para mostrar la lista de profesores -->
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Docente</th>
+                      <th>Estudiante</th>
+                      <th>Curso</th>
+                      <th>Grado</th>
+                      <th>Comentario</th>
+                      <th>Fecha Nota</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                      <th>Eliminar</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let note of notes.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)">
+                      <td>{{ getTeacherNameById(note.teacher_id) }}</td>
+                      <td>{{ getStudentNameById(note.student_id) }}</td>
+                      <td>{{ getCourseNameById(note.courser_id) }}</td>
+                      <td>{{ getGradeInfoById(note.grade_id) }}</td>
+                      <td>{{ note.noteDetail.date_submited | date : "dd-MM-yyyy" }}</td>
+                      <td>{{ note.noteDetail.comment_register }}</td>
+                      <td>{{ getStatusDescription(note.noteDetail.status_note || '') }}</td>
+                      <td style="text-align: center;">
+                        <!-- Botón para modificar nota -->
+                        <button type="button" class="btn btn-warning btn-sm" (click)="editNote(note)">Editar</button>
+                      </td>
+
+                      <td>
+                        <button type="button" class="btn btn-danger btn-sm"
+                          (click)="deleteNoteConfirmation(note)">Eliminar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  

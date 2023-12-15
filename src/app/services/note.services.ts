@@ -54,6 +54,16 @@ export class NotesService {
     );
   }
 
+  saveNote(note: Note): Observable<Note> {
+    if (note.id_note) {
+      // Si la nota ya tiene un ID, realiza una actualización
+      return this.updateNote(note);
+    } else {
+      // Si la nota no tiene un ID, realiza una inserción
+      return this.addNote(note);
+    }
+  }
+
   private handleError(error: any) {
     // Aquí puedes agregar lógica para manejar errores, como mostrar mensajes de error o registrarlos.
     console.error('Error:', error);

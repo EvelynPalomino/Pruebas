@@ -6,10 +6,11 @@ export class Note{
     grade_id: number = 0;
     noteDetail!: {
         id_notedetail: number;
-        date_submitted: Date;
+        date_submited: string;
         comment_register: string;
         status_note: string;
     }; 
+
 }
 
 

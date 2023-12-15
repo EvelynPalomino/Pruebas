@@ -1,45 +1,88 @@
-<form (ngSubmit)="create()" #noteForm="ngForm">
-  <div class="mb-1 position-relative">
-    <div class="mb-3">
-      <label for="teacher_id">Teacher ID</label>
-      <input type="number" class="form-control" name="teacher_id" [(ngModel)]="note.teacher_id" required>
-    </div>
-    
-    <div class="mb-3">
-      <label for="student_id">Student ID</label>
-      <input type="number" class="form-control" name="student_id" [(ngModel)]="note.student_id" required>
-    </div>
-    
-    <div class="mb-3">
-      <label for="courser_id">Course ID</label>
-      <input type="number" class="form-control" name="courser_id" [(ngModel)]="note.courser_id" required>
-    </div>
-    
-    <div class="mb-3">
-      <label for="grade_id">Grade ID</label>
-      <input type="number" class="form-control" name="grade_id" [(ngModel)]="note.grade_id" required>
-    </div>
-    
-    <!-- Note Detail -->
-    <div class="mb-3">
-      <label for="date_submitted">Date Submitted</label>
-      <input type="text" class="form-control" name="date_submitted" [(ngModel)]="note.noteDetail.date_submitted" required>
-    </div>
-    
-    <div class="mb-3">
-      <label for="comment_register">Comment Register</label>
-      <textarea class="form-control" name="comment_register" [(ngModel)]="note.noteDetail.comment_register" required></textarea>
-    </div>
-    
-    <div class="mb-3">
-      <label for="status_note">Status Note</label>
-      <input type="text" class="form-control" name="status_note" [(ngModel)]="note.noteDetail.status_note" required>
-    </div>
-    
-    <!-- Submit and Close buttons -->
-    <div class="modal-footer">
-      <button type="submit" class="btn btn-primary">Save</button>
-      <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
-    </div>
-  </div>
-</form>
+
+
+ <!-- Ventana modal para agregar y editar una nota -->
+ <div class="modal" [style.display]="showForm ? 'block' : 'none'">
+   <div class="modal-container">
+     <h2>{{ showAddFormText }}</h2>
+     <h3 class="subtitle">{{ showAddFormSubtitle }}</h3>
+<!-- Botón fuera del formulario -->
+<button (click)="showForm = true">Agregar Nota</button>
+     <!-- Formulario para agregar nota -->
+     <form (ngSubmit)="addNote()" #teacherForm="ngForm">
+       <div class="row">
+         <!-- Primera fila: Teacher y Course -->
+         <div class="col">
+           <label for="teacher">Teacher:</label>
+           <select id="teacher" name="teacher_id" [(ngModel)]="newNoteForm.teacher_id" required>
+             <option *ngFor="let teacher of teachers" [value]="teacher.idTeacher">{{ getTeacherNameById(teacher.idTeacher) }}
+             </option>
+           </select>
+         </div>
+
+         <div class="col">
+           <label for="course">Course:</label>
+           <select id="course" name="course_id" [(ngModel)]="newNoteForm.courser_id" required>
+             <option *ngFor="let course of courses" [value]="course.id">{{ getCourseNameById(course.id) }}</option>
+           </select>
+         </div>
+       </div>
+
+       <div class="row">
+         <!-- Segunda fila: Student y Note -->
+         <div class="col">
+           <label for="student">Student:</label>
+           <select id="student" name="student_id" [(ngModel)]="newNoteForm.student_id" required>
+             <option *ngFor="let student of students" [value]="student.id">{{ getStudentNameById(student.id) }}
+             </option>
+           </select>
+         </div>
+
+         
+       </div>
+
+       <div class="row">
+         <!-- Tercera fila: Note Category y Date -->
+         <div class="col">
+           <label for="comment_register">Category:</label>
+           <input id="comment_register" name="comment_register" [(ngModel)]="newNoteForm.noteDetail.comment_register" required
+             #categoryInput="ngModel">
+           <!-- Mensaje de error para la categoría -->
+           <div *ngIf="categoryInput.invalid && (categoryInput.dirty || categoryInput.touched)">
+             <!-- Elimina la parte relacionada con el patrón -->
+             La categoría debe contener solo letras.
+           </div>
+         </div>
+
+         <div class="col">
+           <label for="date">Date:</label>
+           <input id="date" name="date_note" [(ngModel)]="newNoteForm.noteDetail.date_submited" type="date" required>
+         </div>
+       </div>
+
+       <div class="row">
+         <!-- Cuarta fila: Status y Botones -->
+         <div class="col">
+           <label for="status">Status:</label>
+           <select id="status" name="status" [(ngModel)]="newNoteForm.noteDetail.status_note" required>
+             <option *ngFor="let option of statusOptions" [value]="option">{{ option }}</option>
+           </select>
+         </div>
+
+         <!-- Botones dentro del formulario -->
+         <div class="row">
+           <!-- Botón para guardar los cambios -->
+           <div class="col">
+             <button type="submit" class="btn-save">Guardar</button>
+           </div>
+
+           <!-- Botón para cancelar y cerrar el formulario -->
+           <div class="col">
+             <button type="button" class="btn-cancel" (click)="cancelAdd()">
+               Cancelar
+             </button>
+           </div>
+         </div>
+       </div>
+     </form>
+   </div>
+ </div>
